@@ -53,6 +53,15 @@ AudioSample G6;
 AudioSample A6;
 AudioSample B6;
 
+AudioSample mG4;
+AudioSample mA4;
+AudioSample mA4up;
+AudioSample mC5;
+AudioSample mD5;
+AudioSample mD5up;
+AudioSample mF5;
+AudioSample mG5;
+
 //pictures
 
 Gif gif;
@@ -71,16 +80,22 @@ int chaseIncrement;
 
 //time
 
-
-
 //instances
+Random random;
+ArrayList<ArrayList<AudioSample>> allNotes;
+
 ArrayList<AudioSample> naturalM3;
 ArrayList<AudioSample> naturalM4;
 ArrayList<AudioSample> naturalM5;
 ArrayList<AudioSample> naturalM6;
+
+ArrayList<AudioSample> mrbMinorG4;
+
 Jellyfish a;
 
-Random random;
+ArrayList<Food> foods;
+
+
 
 void setup(){
    //fullScreen();
@@ -96,11 +111,14 @@ void setup(){
    //instances setup
    random = new Random();
    minim = new Minim(this);
+  
+   allNotes = new ArrayList<ArrayList<AudioSample>>();
 
    naturalM3 = new ArrayList<AudioSample>();
    naturalM4 = new ArrayList<AudioSample>();
    naturalM5 = new ArrayList<AudioSample>();
    naturalM6 = new ArrayList<AudioSample>();
+   mrbMinorG4 = new ArrayList<AudioSample>();
    
    //notes setup
    C3 = minim.loadSample( "C3.wav",512);naturalM3.add(C3);
@@ -136,9 +154,23 @@ void setup(){
    B6 = minim.loadSample( "B6.wav",512);naturalM6.add(B6);
    
    
-   //jellyfish setup
-   a = new Jellyfish(roamIncrement, chaseIncrement);
+    mG4 = minim.loadSample( "marimba/G4.mp3",512);mrbMinorG4.add(mG4);
+    mA4 = minim.loadSample( "marimba/A4.mp3",512);mrbMinorG4.add(mA4);
+    mA4up = minim.loadSample( "marimba/#A4.mp3",512);mrbMinorG4.add(mA4up);
+    mC5 = minim.loadSample( "marimba/C5.mp3",512);mrbMinorG4.add(mC5);
+    mD5 = minim.loadSample( "marimba/D5.mp3",512);mrbMinorG4.add(mD5);
+    mD5up = minim.loadSample( "marimba/#D5.mp3",512);mrbMinorG4.add(mD5up);
+    mF5 = minim.loadSample( "marimba/F5.mp3",512);mrbMinorG4.add(mF5);
+    mG5 = minim.loadSample( "marimba/G5.mp3",512);mrbMinorG4.add(mG5);
+
+   allNotes.add(naturalM3);allNotes.add(naturalM4);allNotes.add(naturalM5);allNotes.add(naturalM6);
+   allNotes.add(mrbMinorG4);
+    setVolume();
    
+   
+   //other instances setup
+   a = new Jellyfish(roamIncrement, chaseIncrement);
+   foods = new ArrayList<Food>();
    
    //pictures set up
    
@@ -158,32 +190,49 @@ void draw(){
   //gif.play();
   //draw pictures
   //image(gif, 100,100);
-  
+   //<>//
   //button boolean
   prevMousePressed = mousePressed; //<>//
  
+ //draw jelly fish //<>//
   a.draw();
-    //if (millis() - noteTime >= 1000){
-    //  if(a.state != "stay"){ //<>//
-    //    naturalM4.get(random.nextInt(0, naturalM4.size())).trigger();
-    //    noteTime = millis();
-    //  }
-    //}
+
+  //draw foods
+  if(foods.size() != 0){
+    for(Food f : foods){
+      f.draw();
+    } //<>//
+  }
+
 
 }
- //<>//
+
 
 void keyPressed(){
-  if(key=='c') C4.trigger();
-  if(key=='d') D4.trigger();
-  if(key=='e') E4.trigger();
-  if(key=='f') F4.trigger();
-  if(key=='g') G4.trigger();
-  if(key=='a') A4.trigger();
-  if(key=='b') B4.trigger();
+  if(key=='q') mG4.trigger();
+  if(key=='w') mA4.trigger();
+  if(key=='e') mA4up.trigger();
+  if(key=='r') mC5.trigger();
+  if(key=='t') mD5.trigger();
+  if(key=='y') mD5up.trigger();
+  if(key=='u') mF5.trigger();
+  if(key=='i') mG5.trigger();
+}
+
+void mousePressed(){
+  Food food = new Food(mouseX, mouseY);
+  foods.add(food);
 }
 
 void stop(){
   minim.stop();
   super.stop();
+}
+
+void setVolume(){
+  for(ArrayList<AudioSample> temp : allNotes){
+    for(AudioSample a : temp){
+      a.setGain(-25);
+    }
+  }
 }
