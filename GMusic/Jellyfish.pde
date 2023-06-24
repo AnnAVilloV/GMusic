@@ -28,7 +28,7 @@ class Jellyfish{
   
   
   
-  Jellyfish(int roamInc, int chaseInc){
+  Jellyfish(int roamInc, int chaseInc, int age){
     roamIncrement = roamInc;
     chaseIncrement = chaseInc;
     this.position = randomPosition().copy();
@@ -38,8 +38,17 @@ class Jellyfish{
     this.grams = random.nextInt(1,8);
     this.growTime = millis();
     
+    this.age = age;
+    
     //music set
-    this.noteSet = (ArrayList<AudioSample>)naturalM6.clone();
+    //testcode
+    if(age == 1)
+      noteSet.addAll(lofiMinorF6s);
+    else if(age == 2)
+      noteSet.addAll(lofiMinorF5s);
+    else 
+      noteSet.addAll(lofiMinorF5s);
+      
     this.noteTime = millis();
     
     
@@ -48,7 +57,7 @@ class Jellyfish{
   
   void draw(){
     move();
-    updateBioState();
+    //updateBioState();
     
     //test color set
     if(isStay){
@@ -62,12 +71,36 @@ class Jellyfish{
 
 
     //note trigger
-    if (millis() - noteTime >= 1000){
-      if(state != "stay"){
-        this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
-        noteTime = millis();
+    if(age == 1 ){
+      if (millis() - noteTime >= 1000){
+        if(state != "stay"){
+          this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
+          noteTime = millis();
+        }
+      }
+    }else if(age == 2){
+       if (millis() - noteTime >= 2000){
+          if(state != "stay"){
+            this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
+            noteTime = millis();
+          }
+       }
+    }else if(age == 3){
+      if (millis() - noteTime >= 2000){
+          //this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
+        //if(state != "stay"){
+          autoChord(lofi1, this.noteSet.get(random.nextInt(0, noteSet.size())));
+          noteTime = millis();
+        //}
+      }
+    }else{
+      if (millis() - noteTime >= 4000){
+          autoChord(lofi1, this.noteSet.get(random.nextInt(0, noteSet.size())));
+          noteTime = millis();
       }
     }
+    
+
 
     //draw the jellyfish
     circle(position.x,position.y, 35);
@@ -92,10 +125,10 @@ class Jellyfish{
     //age update
     if(grams >= 10 && age == 1){
       age = 2;
-      this.noteSet = (ArrayList<AudioSample>)naturalM5.clone();
+      //this.noteSet = (ArrayList<AudioSample>)naturalM5.clone();
     }else if(grams >= 20 && age == 2){
       age = 3;
-      this.noteSet = (ArrayList<AudioSample>)naturalM4.clone();
+      //this.noteSet = (ArrayList<AudioSample>)naturalM4.clone();
       isPairable = true; 
     }
   }

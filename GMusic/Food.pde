@@ -7,9 +7,19 @@ class Food{
   PVector wind = new PVector(0,0);
   private static final float DAMPING = 0.999f ;
     
+    
+    
+  //music set
+  ArrayList<AudioSample> noteSet = new ArrayList<AudioSample>();
+  int noteTime;
+  int count = 0;
+  
   Food(int x, int y){
     position.x = x;
     position.y = y;
+    
+    noteSet.addAll(syMinorF5s);
+    count = noteSet.size()-1;
   }
   
   void draw(){
@@ -17,6 +27,17 @@ class Food{
     fill(255);
     noStroke();
     circle(position.x,position.y,15);
+    
+    //note trigger
+      if (millis() - noteTime >= 3000){
+          if(count >= 0){
+            this.noteSet.get(count).trigger();
+            count--;
+            noteTime = millis();
+        }
+
+      }
+    
     
   }
   

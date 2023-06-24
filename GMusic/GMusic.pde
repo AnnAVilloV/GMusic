@@ -21,46 +21,37 @@ public static final int CHASE_INCREMENT_PROPORTION = 800;
 
 //music
 Minim minim;
-AudioSample C3;
-AudioSample D3;
-AudioSample E3;
-AudioSample F3;
-AudioSample G3;
-AudioSample A3;
-AudioSample B3;
-
-AudioSample C4;
-AudioSample D4;
-AudioSample E4;
-AudioSample F4;
-AudioSample G4;
-AudioSample A4;
-AudioSample B4;
-
-AudioSample C5;
-AudioSample D5;
-AudioSample E5;
-AudioSample F5;
-AudioSample G5;
-AudioSample A5;
-AudioSample B5;
-
-AudioSample C6;
-AudioSample D6;
-AudioSample E6;
-AudioSample F6;
-AudioSample G6;
-AudioSample A6;
-AudioSample B6;
 
 AudioSample mG4;
 AudioSample mA4;
-AudioSample mA4up;
+AudioSample mA4s;
 AudioSample mC5;
 AudioSample mD5;
-AudioSample mD5up;
+AudioSample mD5s;
 AudioSample mF5;
 AudioSample mG5;
+
+AudioSample loF5s;
+AudioSample loG5s;
+AudioSample loA5;
+AudioSample loB5;
+AudioSample loC6s;
+AudioSample loD6;
+AudioSample loE6;
+
+AudioSample loF6s;
+AudioSample loG6s;
+AudioSample loA6;
+AudioSample loB6;
+
+
+AudioSample syF5s;
+AudioSample syG5s;
+AudioSample syA5;
+AudioSample syB5;
+AudioSample syC6s;
+AudioSample syD6;
+AudioSample syE6;
 
 //pictures
 
@@ -82,16 +73,20 @@ int chaseIncrement;
 
 //instances
 Random random;
-ArrayList<ArrayList<AudioSample>> allNotes;
 
-ArrayList<AudioSample> naturalM3;
-ArrayList<AudioSample> naturalM4;
-ArrayList<AudioSample> naturalM5;
-ArrayList<AudioSample> naturalM6;
+ArrayList<AudioSample> lofiMinorF5s;
+ArrayList<AudioSample> lofiMinorF6s;
+ArrayList<AudioSample> lofi1 ;
 
 ArrayList<AudioSample> mrbMinorG4;
 
+ArrayList<AudioSample> syMinorF5s;
+
 Jellyfish a;
+Jellyfish b;
+Jellyfish c;
+Jellyfish d;
+ArrayList<Jellyfish> jellys;
 
 ArrayList<Food> foods;
 
@@ -112,64 +107,63 @@ void setup(){
    random = new Random();
    minim = new Minim(this);
   
-   allNotes = new ArrayList<ArrayList<AudioSample>>();
+   lofiMinorF5s = new ArrayList<AudioSample>();
+   lofiMinorF6s = new ArrayList<AudioSample>();
+   lofi1 = new ArrayList<AudioSample>();
 
-   naturalM3 = new ArrayList<AudioSample>();
-   naturalM4 = new ArrayList<AudioSample>();
-   naturalM5 = new ArrayList<AudioSample>();
-   naturalM6 = new ArrayList<AudioSample>();
    mrbMinorG4 = new ArrayList<AudioSample>();
+   syMinorF5s = new ArrayList<AudioSample>();
    
    //notes setup
-   C3 = minim.loadSample( "C3.wav",512);naturalM3.add(C3);
-   D3 = minim.loadSample( "D3.wav",512);naturalM3.add(D3);
-   E3 = minim.loadSample( "E3.wav",512);naturalM3.add(E3);
-   F3 = minim.loadSample( "F3.wav",512);naturalM3.add(F3);
-   G3 = minim.loadSample( "G3.wav",512);naturalM3.add(G3);
-   A3 = minim.loadSample( "A3.wav",512);naturalM3.add(A3);
-   B3 = minim.loadSample( "B3.wav",512);naturalM3.add(B3);
-   
-   C4 = minim.loadSample( "C4.wav",512);naturalM4.add(C4);
-   D4 = minim.loadSample( "D4.wav",512);naturalM4.add(D4);
-   E4 = minim.loadSample( "E4.wav",512);naturalM4.add(E4);
-   F4 = minim.loadSample( "F4.wav",512);naturalM4.add(F4);
-   G4 = minim.loadSample( "G4.wav",512);naturalM4.add(G4);
-   A4 = minim.loadSample( "A4.wav",512);naturalM4.add(A4);
-   B4 = minim.loadSample( "B4.wav",512);naturalM4.add(B4);
-   
-   C5 = minim.loadSample( "C5.wav",512);naturalM5.add(C5);
-   D5 = minim.loadSample( "D5.wav",512);naturalM5.add(D5);
-   E5 = minim.loadSample( "E5.wav",512);naturalM5.add(E5);
-   F5 = minim.loadSample( "F5.wav",512);naturalM5.add(F5);
-   G5 = minim.loadSample( "G5.wav",512);naturalM5.add(G5);
-   A5 = minim.loadSample( "A5.wav",512);naturalM5.add(A5);
-   B5 = minim.loadSample( "B5.wav",512);naturalM5.add(B5);
-   
-   C6 = minim.loadSample( "C6.wav",512);naturalM6.add(C6);
-   D6 = minim.loadSample( "D6.wav",512);naturalM6.add(D6);
-   E6 = minim.loadSample( "E6.wav",512);naturalM6.add(E6);
-   F6 = minim.loadSample( "F6.wav",512);naturalM6.add(F6);
-   G6 = minim.loadSample( "G6.wav",512);naturalM6.add(G6);
-   A6 = minim.loadSample( "A6.wav",512);naturalM6.add(A6);
-   B6 = minim.loadSample( "B6.wav",512);naturalM6.add(B6);
-   
-   
+      //lofi1
+    loF5s = minim.loadSample( "lofi1/#F5.mp3",512);lofiMinorF5s.add(loF5s);
+    loG5s = minim.loadSample( "lofi1/#G5.mp3",512);lofiMinorF5s.add(loG5s);
+    loA5 = minim.loadSample( "lofi1/A5.mp3",512);lofiMinorF5s.add(loA5);
+    loB5 = minim.loadSample( "lofi1/B5.mp3",512);lofiMinorF5s.add(loB5);
+    loC6s = minim.loadSample( "lofi1/#C6.mp3",512);lofiMinorF5s.add(loC6s);
+    loD6 = minim.loadSample( "lofi1/D6.mp3",512);lofiMinorF5s.add(loD6);
+    loE6 = minim.loadSample( "lofi1/E6.mp3",512);lofiMinorF5s.add(loE6);
+    
+    lofi1.addAll(lofiMinorF5s);
+    
+    loF6s = minim.loadSample( "lofi1/#F6.mp3",512);lofiMinorF6s.add(loF6s);
+    loG6s = minim.loadSample( "lofi1/#G6.mp3",512);lofiMinorF6s.add(loG6s);
+    loA6 = minim.loadSample( "lofi1/A6.mp3",512);lofiMinorF6s.add(loA6);
+    loB6 = minim.loadSample( "lofi1/B6.mp3",512);lofiMinorF6s.add(loB6);
+    
+    lofi1.addAll(lofiMinorF6s);
+    
+      //marimba
     mG4 = minim.loadSample( "marimba/G4.mp3",512);mrbMinorG4.add(mG4);
     mA4 = minim.loadSample( "marimba/A4.mp3",512);mrbMinorG4.add(mA4);
-    mA4up = minim.loadSample( "marimba/#A4.mp3",512);mrbMinorG4.add(mA4up);
+    mA4s = minim.loadSample( "marimba/#A4.mp3",512);mrbMinorG4.add(mA4s);
     mC5 = minim.loadSample( "marimba/C5.mp3",512);mrbMinorG4.add(mC5);
     mD5 = minim.loadSample( "marimba/D5.mp3",512);mrbMinorG4.add(mD5);
-    mD5up = minim.loadSample( "marimba/#D5.mp3",512);mrbMinorG4.add(mD5up);
+    mD5s = minim.loadSample( "marimba/#D5.mp3",512);mrbMinorG4.add(mD5s);
     mF5 = minim.loadSample( "marimba/F5.mp3",512);mrbMinorG4.add(mF5);
     mG5 = minim.loadSample( "marimba/G5.mp3",512);mrbMinorG4.add(mG5);
+    
+    //sytrus1
+    syF5s = minim.loadSample( "sytrus1/#F5.mp3",512);syMinorF5s.add(syF5s);
+    syG5s = minim.loadSample( "sytrus1/#G5.mp3",512);syMinorF5s.add(syG5s);
+    syA5 = minim.loadSample( "sytrus1/A5.mp3",512);syMinorF5s.add(syA5);
+    syB5 = minim.loadSample( "sytrus1/B5.mp3",512);syMinorF5s.add(syB5);
+    syC6s = minim.loadSample( "sytrus1/#C6.mp3",512);syMinorF5s.add(syC6s);
+    syD6 = minim.loadSample( "sytrus1/D6.mp3",512);syMinorF5s.add(syD6);
+    syE6 = minim.loadSample( "sytrus1/E6.mp3",512);syMinorF5s.add(syE6);
 
-   allNotes.add(naturalM3);allNotes.add(naturalM4);allNotes.add(naturalM5);allNotes.add(naturalM6);
-   allNotes.add(mrbMinorG4);
-    setVolume();
+
+    //setVolume();
    
    
    //other instances setup
-   a = new Jellyfish(roamIncrement, chaseIncrement);
+   jellys = new ArrayList<Jellyfish>();
+   a = new Jellyfish(roamIncrement, chaseIncrement,1); jellys.add(a);
+   b = new Jellyfish(roamIncrement, chaseIncrement,2); jellys.add(b);
+   c = new Jellyfish(roamIncrement, chaseIncrement,3); jellys.add(c);
+   d = new Jellyfish(roamIncrement, chaseIncrement,4); jellys.add(d);
+
+   
    foods = new ArrayList<Food>();
    
    //pictures set up
@@ -177,11 +171,26 @@ void setup(){
    //gif = new Gif(this, "pic/test.gif");
    //gif.loop();
    //giftest = Gif.getPImages(this, "pic/test.gif");
+   
+   
+}
 
-   
-   
-   
-   
+void autoChord(ArrayList<AudioSample> list, AudioSample s){
+  int index1 = 0;
+  int index2 = 0;
+  int index3 = 0;
+  
+  index1 = list.indexOf(s);
+  
+  if(index1 + 2 <= list.size())
+    index2 = index1 + 2;
+  if(index1 + 4 <= list.size())
+    index3 = index1 + 4;
+  if(index1 != 0 && index2 != 0 && index3 != 0){
+    list.get(index1).trigger();
+    list.get(index2).trigger();
+    list.get(index3).trigger();
+  }
 }
 
 
@@ -195,7 +204,9 @@ void draw(){
   prevMousePressed = mousePressed; //<>//
  
  //draw jelly fish //<>//
-  a.draw();
+ for(Jellyfish j : jellys){
+   j.draw();
+ }
 
   //draw foods
   if(foods.size() != 0){
@@ -209,14 +220,14 @@ void draw(){
 
 
 void keyPressed(){
-  if(key=='q') mG4.trigger();
-  if(key=='w') mA4.trigger();
-  if(key=='e') mA4up.trigger();
-  if(key=='r') mC5.trigger();
-  if(key=='t') mD5.trigger();
-  if(key=='y') mD5up.trigger();
-  if(key=='u') mF5.trigger();
-  if(key=='i') mG5.trigger();
+  //if(key=='q') autoChord(lofi1, 0);
+  //if(key=='w') autoChord(lofi1, 1);
+  //if(key=='e') autoChord(lofi1, 2);
+  if(key=='r') lofi1.get(3).trigger();
+  if(key=='t') lofi1.get(4).trigger();
+  if(key=='y') lofi1.get(5).trigger();
+  if(key=='u') lofi1.get(6).trigger();
+  if(key=='i') lofi1.get(7).trigger();
 }
 
 void mousePressed(){
@@ -225,14 +236,17 @@ void mousePressed(){
 }
 
 void stop(){
+  for(AudioSample s : lofi1){
+    s.close();
+  }//Does this really work??
   minim.stop();
   super.stop();
 }
 
-void setVolume(){
-  for(ArrayList<AudioSample> temp : allNotes){
-    for(AudioSample a : temp){
-      a.setGain(-25);
-    }
-  }
-}
+//void setVolume(){
+//  for(ArrayList<AudioSample> temp : allNotes){
+//    for(AudioSample a : temp){
+//      a.setGain(-25);
+//    }
+//  }
+//}
