@@ -7,7 +7,8 @@ class Food{
   PVector wind = new PVector(0,0);
   private static final float DAMPING = 0.999f ;
     
-    
+  //state
+  boolean stillExist = true;
     
   //music set
   ArrayList<AudioSample> noteSet = new ArrayList<AudioSample>();
@@ -35,7 +36,6 @@ class Food{
             count--;
             noteTime = millis();
         }
-
       }
     
     

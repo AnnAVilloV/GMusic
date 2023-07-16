@@ -6,6 +6,8 @@ class Button {
     int hoverColor;
     String text;
     
+    boolean tik = true;
+    
     Button(float x, float y, float w, float h, int defaultColor, int hoverColor, String text) {
         this.x = x;
         this.y = y;
@@ -34,8 +36,9 @@ class Button {
         
         if (isMouseHovering()) {
             buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
-                if (mousePressed && mouseButton == LEFT && !prevMousePressed) {
+                if (prevMousePressed) {
                     onPressAction();
+                    prevMousePressed = false;
                 }
         } else{
             buttonColor = lerpColor(buttonColor, defaultColor, 0.1);
@@ -51,6 +54,34 @@ class Button {
     }
     
     void onPressAction() {
+      if(tik){
+        for(Jellyfish j : jellys){
+          j.noteSet.clear();
+          if(j.age<=2){
+            j.noteSet.addAll(lofiC6s);
+          }else{
+            j.noteSet.addAll(lofiC5s);
+          }
+        }
+          fill(255);
+          circle(300,300,100);
+        mood = "happy";
+        tik = false;
+      }else{
+        for(Jellyfish j : jellys){
+          j.noteSet.clear();
+          if(j.age<=2){
+            j.noteSet.addAll(lofiMinorF6s);
+          }else{
+            j.noteSet.addAll(lofiMinorF5s);
+          }
+        }
+          fill(0);
+          circle(300,300,100);
+        mood = "calm";
+        tik = true;
+      }
+
         return;
     }
 }
