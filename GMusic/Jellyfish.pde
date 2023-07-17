@@ -111,6 +111,8 @@ float dis = Float.MAX_VALUE;
         //velocity.x = 0;
         //velocity.y = 0;
       }
+      
+        //image(jelly, position.x,position.y);
     circle(position.x,position.y, 35);
     int x = (int)(position.x + 10 * cos(orientation));  
     int y = (int)(position.y + 10 * sin(orientation));

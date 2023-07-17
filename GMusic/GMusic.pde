@@ -71,7 +71,7 @@ AudioSample syD6;
 AudioSample syE6;
 
 //pictures
-Gif gif;
+Gif jelly;
 PImage[] giftest;
 
 //booleans
@@ -244,9 +244,12 @@ void setup(){
    foods = new ArrayList<Food>();
    
    //pictures set up
-   //gif = new Gif(this, "pic/test.gif");
-   //gif.loop();
-   //giftest = Gif.getPImages(this, "pic/test.gif");
+   jelly = new Gif(this, "jelly.gif");
+   jelly.resize(100,100);
+
+     jelly.play();
+     jelly.loop();
+   //giftest = Gif.getPImages(this, "test.gif");
    
    //state set up
    mood = "calm"; //calm, happy
@@ -259,10 +262,10 @@ void setup(){
 
 void draw(){
   background(BGCOLOR);
-  //gif.play();
   //draw pictures
-  //image(gif, 100,100);
-   //<>// //<>//
+
+  image(jelly,100,100);
+ //<>//
  //current
    currentUpdate();
  
