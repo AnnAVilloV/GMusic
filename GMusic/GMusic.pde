@@ -71,6 +71,7 @@ AudioSample syD6;
 AudioSample syE6;
 
 //pictures
+PImage bgpic;
 Gif jelly;
 PImage[] giftest;
 
@@ -244,11 +245,10 @@ void setup(){
    foods = new ArrayList<Food>();
    
    //pictures set up
-   jelly = new Gif(this, "jelly.gif");
-   jelly.resize(100,100);
-
-     jelly.play();
-     jelly.loop();
+   bgpic = loadImage("background.png");
+   bgpic.resize(1000,800);
+   jelly = new Gif(this, "jelly80.gif");
+   jelly.play();
    //giftest = Gif.getPImages(this, "test.gif");
    
    //state set up
@@ -262,17 +262,11 @@ void setup(){
 
 void draw(){
   background(BGCOLOR);
-  //draw pictures
-
-  image(jelly,100,100);
+  image(bgpic,500,400);
+    //translate(0,0);
  //<>//
  //current
-   currentUpdate();
- 
- //draw jelly fish //<>//
- for(Jellyfish j : jellys){
-   j.draw();
- }
+   currentUpdate(); //<>//
 
   //draw foods
   if(foods.size() != 0){
@@ -284,6 +278,12 @@ void draw(){
   
   //test code
   btn.draw();
+  
+   //draw jelly fish
+ for(Jellyfish j : jellys){
+   imageMode(CENTER);
+   j.draw();
+ }
  //<>//
 }  //<>//
 
@@ -329,8 +329,8 @@ void keyPressed(){
 }
 
 void mousePressed(){
-  //Food food = new Food(mouseX, mouseY);
-  //foods.add(food);
+  Food food = new Food(mouseX, mouseY);
+  foods.add(food);
   prevMousePressed = true;
   
   for(Jellyfish j : jellys){

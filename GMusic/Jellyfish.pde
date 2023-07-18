@@ -1,9 +1,7 @@
 final float ORIENTATION_INCREMENT = PI/32 ;
 
 class Jellyfish{
-//test
 float dis = Float.MAX_VALUE;
-  
   
   PVector position = new PVector(0,0);  
   float orientation = (float)random.nextDouble(-Math.PI, Math.PI);
@@ -46,7 +44,7 @@ float dis = Float.MAX_VALUE;
   boolean overJelly = false;
   boolean isdrag = false;
   
-  Jellyfish( int age){
+  Jellyfish(int age){
     
     //chaseIncrement = chaseInc;
     
@@ -76,8 +74,6 @@ float dis = Float.MAX_VALUE;
   
   
   void draw(){
-    move();
-    
     if(age < 4) //old jelly don't eat
       foodDetect();
     
@@ -112,13 +108,6 @@ float dis = Float.MAX_VALUE;
         //velocity.y = 0;
       }
       
-        //image(jelly, position.x,position.y);
-    circle(position.x,position.y, 35);
-    int x = (int)(position.x + 10 * cos(orientation));  
-    int y = (int)(position.y + 10 * sin(orientation));
-    fill(0);
-    circle(x,y,10);
-    
     
     updateParticles();
     for(Particle p : particleList){
@@ -126,24 +115,40 @@ float dis = Float.MAX_VALUE;
     }
     
     
-    fill(0);
+    fill(255);
     textSize(20);
     text(grams,position.x,position.y);
-   
+
+    //translate(position.x,position.y);
+    //rotate(orientation );
+    image(jelly,position.x,position.y);
+    
+    //fill(255);
+    //circle(position.x,position.y, 35);
+    //int x = (int)(position.x + 10 * cos(orientation));  
+    //int y = (int)(position.y + 10 * sin(orientation));
+    //fill(0);
+    //circle(x,y,10);
+    
+    //translate(0,0);
+    move();
+    
   }
   
   void updateParticles(){
-    if(age == 1){
-       if(millis() - particleTime >= 1000){
-         resetParticles();
-         particleTime = millis();
-       }
-    }else{
-       if(millis() - particleTime >= 2000){
-         resetParticles();
-         particleTime = millis();
-       }
-    }
+
+        if(age == 1){
+           if(millis() - particleTime >= 1000){
+             resetParticles();
+             particleTime = millis();
+           }
+        }else{
+           if(millis() - particleTime >= 2000){
+             resetParticles();
+             particleTime = millis();
+           }
+        }
+    
   }
   
   void resetParticles(){
@@ -153,7 +158,17 @@ float dis = Float.MAX_VALUE;
   }
   
   void updateMusic(){    
-      //note trigger
+    if(isdrag){
+      //quickly split out notes
+        if (millis() - noteTime >= 500){
+          //if(state != "float"){
+            this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
+            noteTime = millis();
+          //}
+        }
+    }else{
+      //normally split out notes
+            //note trigger
       if(age == 1 ){
         if (millis() - noteTime >= 1000){
           //if(state != "float"){
@@ -182,6 +197,9 @@ float dis = Float.MAX_VALUE;
             noteTime = millis();
         }
       }
+      
+    }
+
   }
   
   void updateBioState(){
@@ -302,7 +320,7 @@ float dis = Float.MAX_VALUE;
         velocity = toTarget.normalize().mult(chaseIncrement);
       }
       PVector realVel = velocity.copy();
-      realVel.add(current);
+      //realVel.add(current);
       position.add(realVel);
       
 
@@ -336,11 +354,10 @@ float dis = Float.MAX_VALUE;
         
   }
   
-PVector randomPosition(){
+  PVector randomPosition(){
     PVector p = new PVector();
-
-    p.x = random.nextInt(35, screenWidth-35);
-    p.y = random.nextInt(35, screenHeight-35);
+    p.x = random.nextInt(35, width-35);
+    p.y = random.nextInt(35, height-35);
     return p;
   }
 
