@@ -11,9 +11,6 @@ final class Particle{
   int rTime;
   
   int alpha = 255;
-
-
-  
   
   Jellyfish myJelly;
   
@@ -27,7 +24,11 @@ final class Particle{
   void draw(){
     noStroke();
     integrate();
-    fill(255,alpha);
+    if(myJelly.isdrag){
+      fill(#FF8031,alpha);
+    }else{
+      fill(255,alpha);
+    }
     if(millis() - rTime >= 100){
       if(radius > 0){
         radius = radius - 0.1;

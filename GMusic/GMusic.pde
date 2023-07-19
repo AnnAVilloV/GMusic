@@ -329,8 +329,8 @@ void keyPressed(){
 }
 
 void mousePressed(){
-  Food food = new Food(mouseX, mouseY);
-  foods.add(food);
+  //Food food = new Food(mouseX, mouseY);
+  //foods.add(food);
   prevMousePressed = true;
   
   for(Jellyfish j : jellys){

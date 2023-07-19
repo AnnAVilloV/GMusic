@@ -119,9 +119,10 @@ float dis = Float.MAX_VALUE;
     textSize(20);
     text(grams,position.x,position.y);
 
-    //translate(position.x,position.y);
-    //rotate(orientation );
-    image(jelly,position.x,position.y);
+    pushMatrix();
+    translate(position.x,position.y);
+    rotate(orientation );
+    image(jelly,0,0);
     
     //fill(255);
     //circle(position.x,position.y, 35);
@@ -130,6 +131,8 @@ float dis = Float.MAX_VALUE;
     //fill(0);
     //circle(x,y,10);
     
+    
+    popMatrix();
     //translate(0,0);
     move();
     
@@ -137,6 +140,12 @@ float dis = Float.MAX_VALUE;
   
   void updateParticles(){
 
+    if(isdrag){
+        if(millis() - particleTime >= 500){
+          resetParticles();
+          particleTime = millis();
+        }
+    }else{
         if(age == 1){
            if(millis() - particleTime >= 1000){
              resetParticles();
@@ -148,7 +157,7 @@ float dis = Float.MAX_VALUE;
              particleTime = millis();
            }
         }
-    
+    }
   }
   
   void resetParticles(){
@@ -160,12 +169,23 @@ float dis = Float.MAX_VALUE;
   void updateMusic(){    
     if(isdrag){
       //quickly split out notes
+      if(age < 4){
         if (millis() - noteTime >= 500){
           //if(state != "float"){
             this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
             noteTime = millis();
           //}
         }
+      }else{
+        if (millis() - noteTime >= 500){
+          if(mood == "calm")
+            autoChord(lofi1, this.noteSet.get(random.nextInt(0, noteSet.size())));
+          else
+            autoChord(lofi2, this.noteSet.get(random.nextInt(0, noteSet.size())));
+            noteTime = millis();
+        }
+      }
+
     }else{
       //normally split out notes
             //note trigger
