@@ -63,8 +63,8 @@ class Button {
             j.noteSet.addAll(lofiC5s);
           }
         }
-          fill(255);
-          circle(300,300,100);
+          //fill(255);
+          //circle(300,300,100);
         mood = "happy";
         tik = false;
       }else{
@@ -76,8 +76,8 @@ class Button {
             j.noteSet.addAll(lofiMinorF5s);
           }
         }
-          fill(0);
-          circle(300,300,100);
+          //fill(0);
+          //circle(300,300,100);
         mood = "calm";
         tik = true;
       }

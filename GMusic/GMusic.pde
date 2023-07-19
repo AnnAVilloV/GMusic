@@ -247,7 +247,7 @@ void setup(){
    //pictures set up
    bgpic = loadImage("background.png");
    bgpic.resize(1000,800);
-   jelly = new Gif(this, "jelly80.gif");
+   jelly = new Gif(this, "jelly100.gif");
    jelly.play();
    //giftest = Gif.getPImages(this, "test.gif");
    

@@ -141,7 +141,8 @@ float dis = Float.MAX_VALUE;
   void updateParticles(){
 
     if(isdrag){
-        if(millis() - particleTime >= 500){
+       float speed = abs(mouseX-pmouseX) + abs(mouseY-pmouseY);
+        if(millis() - particleTime >= 2000/speed){
           resetParticles();
           particleTime = millis();
         }
@@ -169,23 +170,7 @@ float dis = Float.MAX_VALUE;
   void updateMusic(){    
     if(isdrag){
       //quickly split out notes
-      if(age < 4){
-        if (millis() - noteTime >= 500){
-          //if(state != "float"){
-            this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
-            noteTime = millis();
-          //}
-        }
-      }else{
-        if (millis() - noteTime >= 500){
-          if(mood == "calm")
-            autoChord(lofi1, this.noteSet.get(random.nextInt(0, noteSet.size())));
-          else
-            autoChord(lofi2, this.noteSet.get(random.nextInt(0, noteSet.size())));
-            noteTime = millis();
-        }
-      }
-
+      dragMusic();
     }else{
       //normally split out notes
             //note trigger
@@ -221,6 +206,26 @@ float dis = Float.MAX_VALUE;
     }
 
   }
+
+  void dragMusic(){
+     float speed = abs(mouseX-pmouseX) + abs(mouseY-pmouseY);
+      if(age < 4){
+        if (millis() - noteTime >= 2000/speed){
+          //if(state != "float"){
+            this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
+            noteTime = millis();
+          //}
+        }
+      }else{
+        if (millis() - noteTime >= 2000/speed){
+          if(mood == "calm")
+            autoChord(lofi1, this.noteSet.get(random.nextInt(0, noteSet.size())));
+          else
+            autoChord(lofi2, this.noteSet.get(random.nextInt(0, noteSet.size())));
+            noteTime = millis();
+        }
+      }
+  }
   
   void updateBioState(){
     //naturally gaining weight
@@ -238,9 +243,6 @@ float dis = Float.MAX_VALUE;
     //  isPairable = true; 
     //}
   }
-  
-
-  
   
   
   void stateSwitcher(){
