@@ -17,12 +17,12 @@ float dis = Float.MAX_VALUE;
   
   //Bioinformatics
   int age = 1; //kid1,young2,adult3,old4
-  int grams;
+  int grams = 30;
   int growTime;
-  boolean isPairable = false;
+  int gender;//0 = female, 1 = male 
   
   
-  //roam: moving with aim; float: float, or float with water(to be set); chase: when feed food
+  //roam: moving with aim; float: float with water(to be set); chase: when find food; mate: has mate
   String state = "float";
   int floatStartTime;
   int floatTime;
@@ -44,18 +44,28 @@ float dis = Float.MAX_VALUE;
   boolean overJelly = false;
   boolean isdrag = false;
   
-  Jellyfish(int age){
+  
+  //mate
+  MateModule mModule = new MateModule(this);
+  boolean isPairable = false;
+  int mateTime;
+  
+  
+  
+  Jellyfish(int age, PVector p, int gender){
     
     //chaseIncrement = chaseInc;
     
-    this.position = randomPosition().copy();
+    this.position = p.copy();
     this.aim = randomPosition().copy();
     
     //bio set
-    this.grams = random.nextInt(1,8);
+    // this.grams = random.nextInt(1,8);
     this.growTime = millis();
     this.age = age;
-    
+    this.gender = gender;
+    this.mateTime = millis();
+
     //music set
     if(age == 1 || age == 2)
       noteSet.addAll(lofiMinorF6s);
@@ -77,21 +87,17 @@ float dis = Float.MAX_VALUE;
     if(age < 4) //old jelly don't eat
       foodDetect();
     
-    updateBioState();
-    
-    //test color set
-    if(state == "chase")
-      fill(#FFCE29);
-    else if(isPairable)
-        fill(#FF8EC6);
-    else if(isfloat)
-      fill(#E01705);
-    else
-      fill(JELLYFISH);
-    
+    updateBioState();   
+    updateMateState(); 
     updateMusic();
+    updateParticles();
+    for(Particle p : particleList){
+      p.draw();
+    }
     
-    
+
+
+        
     //draw the jellyfish
     // Test if the cursor is over the jelly 
       if (mouseX > position.x -50 && mouseX < position.x + 50 && 
@@ -107,35 +113,35 @@ float dis = Float.MAX_VALUE;
         //velocity.x = 0;
         //velocity.y = 0;
       }
-      
-    
-    updateParticles();
-    for(Particle p : particleList){
-      p.draw();
-    }
-    
-    
-    fill(255);
-    textSize(20);
-    text(grams,position.x,position.y);
-
     pushMatrix();
     translate(position.x,position.y);
     rotate(orientation );
     image(jelly,0,0);
-    
+    popMatrix();
+
+    move();
+
+    //test grams
+    fill(255);
+    textSize(20);
+    text(grams,position.x,position.y);
+
+
+    //test color
+    // if(state == "chase")
+    //   fill(#FFCE29);
+    // else if(isPairable)
+    //     fill(#FF8EC6);
+    // else if(isfloat)
+    //   fill(#E01705);
+    // else
+    //   fill(JELLYFISH);
     //fill(255);
     //circle(position.x,position.y, 35);
     //int x = (int)(position.x + 10 * cos(orientation));  
     //int y = (int)(position.y + 10 * sin(orientation));
     //fill(0);
-    //circle(x,y,10);
-    
-    
-    popMatrix();
-    //translate(0,0);
-    move();
-    
+    //circle(x,y,10);    
   }
   
   void updateParticles(){
@@ -226,6 +232,40 @@ float dis = Float.MAX_VALUE;
         }
       }
   }
+
+  void updateMateState(){
+    //mate status
+    if(millis() - mateTime > 5000){
+      if(age == 3 && grams >= 20 && !isPairable){
+        isPairable = true;
+      }
+    }
+
+    if(grams < 20 && isPairable){
+      isPairable = false;
+    }
+
+    if(isPairable){
+      mModule.detectMate();
+      text("isPairable", position.x, position.y - 60);
+    }
+
+    //test code
+
+    if(gender == 0){
+      fill(#FA1E6F);
+      text("isP:"+isPairable, position.x-50, position.y-50);
+      text("fM:"+mModule.foundMate, position.x-50, position.y+50);
+      text(state, position.x, position.y-100);
+    }else{
+      fill(#FAAD1E);
+      text("isP:"+isPairable, position.x+50, position.y-50);
+      text("fM:"+mModule.foundMate, position.x+50, position.y+50);
+      text(state, position.x, position.y+100);
+    }
+
+
+  }
   
   void updateBioState(){
     //naturally gaining weight
@@ -233,15 +273,19 @@ float dis = Float.MAX_VALUE;
         this.grams++;
         growTime = millis();
     }
-    //age update
-    //if(grams >= 10 && age == 1){
-    //  age = 2;
-    //  //this.noteSet = (ArrayList<AudioSample>)naturalM5.clone();
-    //}else if(grams >= 20 && age == 2){
-    //  age = 3;
-    //  //this.noteSet = (ArrayList<AudioSample>)naturalM4.clone();
-    //  isPairable = true; 
-    //}
+    // age update
+    if(grams >= 10 && age == 1){
+     age = 2;
+    }else if(grams >= 20 && age == 2){
+     age = 3;
+     this.noteSet.clear();
+     this.noteSet.addAll(lofiMinorF5s); 
+    }
+
+    //after 2 mate become old - age 4
+    if(age == 3 && mModule.mateCount >= 2){
+      age = 4 ;
+    }
   }
   
   
@@ -266,13 +310,30 @@ float dis = Float.MAX_VALUE;
         isfloat = false;
       }
     }
-    //if a food was fed, and is in detect range, switch to chase
-    if(state != "chase" && foundFood){
-      state = "chase";
+
+    //mate prior to food
+    if(isPairable){
+      //if found a mate, switch to mate chase
+      if(state != "mate" && isPairable){
+        if(mModule.foundMate && mModule.myMate.isPairable){
+          state = "mate";
+        }
+      }      
+    }else{
+      //if a food was fed, and is in detect range, switch to chase
+      if(state != "chase" && foundFood){
+        state = "chase";
+      }
+      if(state == "chase" && !foundFood){
+        state = "roam";
+      }
     }
-    if(state == "chase" && !foundFood){
-      state = "roam";
+    
+    if(state == "mate" && (!isPairable || !mModule.myMate.isPairable)){
+        state = "roam";
     }
+
+
   }
   
   void angleSelect(){
@@ -341,6 +402,10 @@ float dis = Float.MAX_VALUE;
         PVector toTarget = new PVector(myFood.position.x - position.x, myFood.position.y - position.y);
         velocity = toTarget.normalize().mult(chaseIncrement);
       }
+      else if(state == "mate"){
+        PVector toTarget = new PVector(mModule.myMate.position.x - position.x, mModule.myMate.position.y - position.y);
+        velocity = toTarget.normalize().mult(chaseIncrement);
+      }
       PVector realVel = velocity.copy();
       //realVel.add(current);
       position.add(realVel);
@@ -376,12 +441,7 @@ float dis = Float.MAX_VALUE;
         
   }
   
-  PVector randomPosition(){
-    PVector p = new PVector();
-    p.x = random.nextInt(35, width-35);
-    p.y = random.nextInt(35, height-35);
-    return p;
-  }
+
 
   void hitHandling(){
     if(position.x < 35){

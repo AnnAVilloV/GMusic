@@ -237,10 +237,10 @@ void setup(){
 
    //other instances setup
    jellys = new ArrayList<Jellyfish>();
-   a = new Jellyfish(1); jellys.add(a);
-   b = new Jellyfish(2); jellys.add(b);
-   c = new Jellyfish(3); jellys.add(c);
-   d = new Jellyfish(4); jellys.add(d);
+   a = new Jellyfish(1,randomPosition(),0); jellys.add(a);
+   b = new Jellyfish(2,randomPosition(),1); jellys.add(b);
+   c = new Jellyfish(3,randomPosition(),0); jellys.add(c);
+   d = new Jellyfish(4,randomPosition(),1); jellys.add(d);
 
    foods = new ArrayList<Food>();
    
@@ -280,9 +280,9 @@ void draw(){
   btn.draw();
   
    //draw jelly fish
- for(Jellyfish j : jellys){
+for(int i = 0; i < jellys.size(); i++){
    imageMode(CENTER);
-   j.draw();
+   jellys.get(i).draw();
  }
  //<>//
 }  //<>//
@@ -356,6 +356,13 @@ void stop(){
   }//Does this really work??
   minim.stop();
   super.stop();
+}
+
+PVector randomPosition(){
+  PVector p = new PVector();
+  p.x = random.nextInt(35, width-35);
+  p.y = random.nextInt(35, height-35);
+  return p;
 }
 
 //void setVolume(){
