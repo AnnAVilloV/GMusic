@@ -1,3 +1,4 @@
+
 final float ORIENTATION_INCREMENT = PI/32 ;
 
 class Jellyfish{
@@ -17,9 +18,11 @@ float dis = Float.MAX_VALUE;
   
   //Bioinformatics
   int age = 1; //kid1,young2,adult3,old4
-  int grams = 30;
+  int grams = 1;
   int growTime;
   int gender;//0 = female, 1 = male 
+  boolean isDead = false;
+  int alpha = 255;
   
   
   //roam: moving with aim; float: float with water(to be set); chase: when find food; mate: has mate
@@ -60,17 +63,25 @@ float dis = Float.MAX_VALUE;
     this.aim = randomPosition().copy();
     
     //bio set
-    // this.grams = random.nextInt(1,8);
+    this.grams = random.nextInt(1,8);
     this.growTime = millis();
     this.age = age;
     this.gender = gender;
     this.mateTime = millis();
+    //gifSet();
+    
 
     //music set
-    if(age == 1 || age == 2)
-      noteSet.addAll(lofiMinorF6s);
+    if(age == 1 || age == 2){
+      if(mood == "calm")
+        noteSet.addAll(lofiMinorF6s);
+      else
+        noteSet.addAll(lofiC6s);
+    }
     else 
       noteSet.addAll(lofiMinorF5s);
+
+    
     this.noteTime = millis();
     
     this.lastAngleTime = millis();
@@ -84,6 +95,21 @@ float dis = Float.MAX_VALUE;
   
   
   void draw(){
+    //test code
+    //  if(noteSet.get(0).equals(lofiMinorF6s.get(0))){
+    //    text("lofiMinorF6s", position.x,position.y - 150);
+    //  }else if(noteSet.get(0).equals(lofiMinorF5s.get(0))){
+    //    text("lofiMinorF5s", position.x,position.y - 150);
+    //  }else if(noteSet.get(0).equals(lofiC6s.get(0))){
+    //    text("lofiC6s", position.x,position.y - 150);
+    //  }else if(noteSet.get(0).equals(lofiC5s.get(0))){
+    //    text("lofiC5s", position.x,position.y - 150);
+    //  }else{
+    //    text("none", position.x,position.y - 150);
+    //  }
+    
+    
+    
     if(age < 4) //old jelly don't eat
       foodDetect();
     
@@ -95,9 +121,29 @@ float dis = Float.MAX_VALUE;
       p.draw();
     }
     
+    if(!isDead){
+      drawJelly();
+      //test code
+      text(age, position.x-80, position.y-50);
+    }
+    else{
+      // text("Im dead", position.x,position.y);
+      alpha--;
+      if(alpha <= 10){
+        jellys.remove(this);
+      }else{
+        tint(255,alpha);
+        drawJelly();
+        tint(255,255);
+      }
 
+      
 
-        
+    }
+ 
+  }
+
+  void drawJelly(){
     //draw the jellyfish
     // Test if the cursor is over the jelly 
       if (mouseX > position.x -50 && mouseX < position.x + 50 && 
@@ -115,8 +161,9 @@ float dis = Float.MAX_VALUE;
       }
     pushMatrix();
     translate(position.x,position.y);
-    rotate(orientation );
-    image(jelly,0,0);
+    rotate(orientation);
+    // image(,0,0);
+    drawGif();
     popMatrix();
 
     move();
@@ -141,7 +188,25 @@ float dis = Float.MAX_VALUE;
     //int x = (int)(position.x + 10 * cos(orientation));  
     //int y = (int)(position.y + 10 * sin(orientation));
     //fill(0);
-    //circle(x,y,10);    
+    //circle(x,y,10);   
+  }
+  
+  void drawGif(){
+   if(gender == 0){ //female
+     if(age == 1)
+       image(jellyF50,0,0);
+     else if(age == 2)
+       image(jellyF80,0,0);
+     else
+       image(jellyF100,0,0);
+   }else{ //male
+     if(age == 1)
+       image(jellyM50,0,0);
+     else if(age == 2)
+       image(jellyM80,0,0);
+     else
+       image(jellyM100,0,0);
+   }
   }
   
   void updateParticles(){
@@ -235,7 +300,7 @@ float dis = Float.MAX_VALUE;
 
   void updateMateState(){
     //mate status
-    if(millis() - mateTime > 5000){
+    if(millis() - mateTime > 10000){
       if(age == 3 && grams >= 20 && !isPairable){
         isPairable = true;
       }
@@ -251,18 +316,17 @@ float dis = Float.MAX_VALUE;
     }
 
     //test code
-
-    if(gender == 0){
-      fill(#FA1E6F);
-      text("isP:"+isPairable, position.x-50, position.y-50);
-      text("fM:"+mModule.foundMate, position.x-50, position.y+50);
-      text(state, position.x, position.y-100);
-    }else{
-      fill(#FAAD1E);
-      text("isP:"+isPairable, position.x+50, position.y-50);
-      text("fM:"+mModule.foundMate, position.x+50, position.y+50);
-      text(state, position.x, position.y+100);
-    }
+    // if(gender == 0){
+    //  fill(#FA1E6F);
+    //  text("isP:"+isPairable, position.x-50, position.y-50);
+    //  text("fM:"+mModule.foundMate, position.x-50, position.y+50);
+    //  text(state, position.x, position.y-100);
+    // }else{
+    //  fill(#FAAD1E);
+    //  text("isP:"+isPairable, position.x+50, position.y-50);
+    //  text("fM:"+mModule.foundMate, position.x+50, position.y+50);
+    //  text(state, position.x, position.y+100);
+    // }
 
 
   }
@@ -276,18 +340,21 @@ float dis = Float.MAX_VALUE;
     // age update
     if(grams >= 10 && age == 1){
      age = 2;
+     //gifSet();
     }else if(grams >= 20 && age == 2){
      age = 3;
      this.noteSet.clear();
      this.noteSet.addAll(lofiMinorF5s); 
+     //gifSet();
     }
 
     //after 2 mate become old - age 4
     if(age == 3 && mModule.mateCount >= 2){
       age = 4 ;
+      deathProgress();
     }
   }
-  
+
   
   void stateSwitcher(){
     //after roam, float for some time.
@@ -440,24 +507,22 @@ float dis = Float.MAX_VALUE;
        orientation += 2*PI ;  
         
   }
-  
-
 
   void hitHandling(){
-    if(position.x < 35){
-      position.x = 35;
+    if(position.x < 80){
+      position.x = 80;
       velocity.x = 0;
       isHit = true;
-    }else if(position.x > width - 35){
-      position.x = width - 35;
+    }else if(position.x > width - 80){
+      position.x = width - 80;
       velocity.x = 0;
       isHit = true;
-    }else if(position.y < 35){
-      position.y = 35;
+    }else if(position.y < 80){
+      position.y = 80;
       velocity.y = 0;
       isHit = true;
-    }else if(position.y > height - 35){
-      position.y = height - 35;
+    }else if(position.y > height - 220){
+      position.y = height - 220;
       velocity.y = 0;
       isHit = true;
     }

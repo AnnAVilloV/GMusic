@@ -1,6 +1,8 @@
 class Button {
-    float x, y;
-    float w, h;
+    float x=150;
+    float y=720;
+    float w=190;
+    float h=120;
     int buttonColor;
     int defaultColor;
     int hoverColor;
@@ -8,11 +10,7 @@ class Button {
     
     boolean tik = true;
     
-    Button(float x, float y, float w, float h, int defaultColor, int hoverColor, String text) {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h; 
+    Button(int defaultColor, int hoverColor, String text) {
         this.defaultColor = defaultColor;
         this.buttonColor = defaultColor;
         this.hoverColor = hoverColor;
@@ -21,15 +19,20 @@ class Button {
     
     void draw() {
         updateButton();
-        fill(buttonColor, 200);
-        noStroke();
-        rectMode(CENTER);
-        rect(x, y, w, h, 5, 5, 5, 5);
-
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(18);
-        text(text, x, y);
+        //fill(buttonColor, 200);
+        //noStroke();
+        //rectMode(CENTER);
+        //rect(x, y, w, h, 5, 5, 5, 5);
+        //fill(255);
+        //textAlign(CENTER, CENTER);
+        //textSize(18);
+        //text(text, x, y);
+        
+        if(tik){
+          image(btnOn,150,720);
+        }else{
+          image(btnOff,150,720);
+        }
     }
     
     void updateButton() {
@@ -63,8 +66,6 @@ class Button {
             j.noteSet.addAll(lofiC5s);
           }
         }
-          //fill(255);
-          //circle(300,300,100);
         mood = "happy";
         tik = false;
       }else{
@@ -76,12 +77,12 @@ class Button {
             j.noteSet.addAll(lofiMinorF5s);
           }
         }
-          //fill(0);
-          //circle(300,300,100);
         mood = "calm";
-        tik = true;
+        tik = true; 
       }
-
         return;
+    }
+    void onPressAction2(){
+      deathProgress();
     }
 }

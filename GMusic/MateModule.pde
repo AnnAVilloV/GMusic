@@ -15,8 +15,8 @@ float dis = Float.MAX_VALUE;
   void detectMate(){
     if(!foundMate){
       for(Jellyfish j : jellys){  
-        if(j.isPairable && myJelly.gender != j.gender){
-          dis = PVector.dist(myJelly.position, j.position);        
+        if(j.isPairable && myJelly.gender != j.gender && j.isPairable){
+          dis = PVector.dist(myJelly.position, j.position); 
           if(dis < 200 && dis != 0){
             foundMate = true;
             myMate = j;
@@ -47,7 +47,6 @@ float dis = Float.MAX_VALUE;
     foundMate = false;
     myJelly.mateTime = millis();
     myJelly.isPairable = false;
-
 
     myMate.grams -= 5;
     myMate.mModule.mateCount++;

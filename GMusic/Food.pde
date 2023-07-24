@@ -37,8 +37,6 @@ class Food{
             noteTime = millis();
         }
       }
-    
-    
   }
   
   void integrate(){

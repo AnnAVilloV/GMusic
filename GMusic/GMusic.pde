@@ -72,8 +72,18 @@ AudioSample syE6;
 
 //pictures
 PImage bgpic;
-Gif jelly;
-PImage[] giftest;
+PImage panelPic;
+PImage btnOn;
+PImage btnOff;
+PImage stillM50;
+PImage stillF50;
+
+Gif jellyM50;
+Gif jellyM80;
+Gif jellyM100;
+Gif jellyF50;
+Gif jellyF80;
+Gif jellyF100;
 
 //booleans
 boolean prevMousePressed = false;
@@ -88,6 +98,7 @@ int chaseIncrement;
 
 //instances
 Random random;
+Panel panel;
 
 PVector current;
 int currentTime;
@@ -204,7 +215,7 @@ void setup(){
     loA7s = minim.loadSample( "lofiC#/#A7.mp3",512);
     loB7s = minim.loadSample( "lofiC#/#B7.mp3",512);
     
-    lofiC5s.add(loC5s);    lofiC5s.add(loE5s);    lofiC6s.add(loG5s);    lofiC6s.add(loA5s);
+    lofiC5s.add(loC5s);    lofiC5s.add(loE5s);    lofiC5s.add(loG5s);    lofiC5s.add(loA5s);
     lofiC6s.add(loC6s);    lofiC6s.add(loE6s);    lofiC6s.add(loG6s);    lofiC6s.add(loA6s);
     lofiC7s.add(loC7s);    lofiC7s.add(loE7s);    lofiC7s.add(loG7s);    lofiC7s.add(loA7s);
     
@@ -234,6 +245,10 @@ void setup(){
     syE6 = minim.loadSample( "sytrus1/E6.mp3",512);syMinorF5s.add(syE6);
 
     //setVolume();
+    
+    
+   //state set up
+   mood = "calm"; //calm, happy
 
    //other instances setup
    jellys = new ArrayList<Jellyfish>();
@@ -245,17 +260,23 @@ void setup(){
    foods = new ArrayList<Food>();
    
    //pictures set up
-   bgpic = loadImage("background.png");
-   bgpic.resize(1000,800);
-   jelly = new Gif(this, "jelly100.gif");
-   jelly.play();
-   //giftest = Gif.getPImages(this, "test.gif");
+   bgpic = loadImage("background.png");   bgpic.resize(1000,800);
+   panelPic = loadImage("panel.png");   panelPic.resize(1000,800);
+   btnOn = loadImage("on.png");  btnOff = loadImage("off.png");
+   stillM50 = loadImage("stillM40.png");  stillM50.resize(50,50);
+   stillF50 = loadImage("stillF40.png");  stillF50.resize(50,50);
    
-   //state set up
-   mood = "calm"; //calm, happy
-   
-   //test code
-   btn = new Button(100,100,100,100,DARK_BLUE, BLUE_PURPLE, "test");
+   jellyM50 = new Gif(this, "jelly50.gif");   jellyM50.play();
+   jellyM80 = new Gif(this, "jelly80.gif");   jellyM80.play();
+   jellyM100 = new Gif(this, "jelly100.gif");   jellyM100.play();
+   jellyF50 = new Gif(this, "jellyDark50.gif");   jellyF50.play();
+   jellyF80 = new Gif(this, "jellyDark80.gif");   jellyF80.play();
+   jellyF100 = new Gif(this, "jellyDark100.gif");   jellyF100.play();
+
+
+   //panel
+   panel = new Panel();
+   btn = new Button(DARK_BLUE, BLUE_PURPLE, "test");
    
 }
 
@@ -263,29 +284,49 @@ void setup(){
 void draw(){
   background(BGCOLOR);
   image(bgpic,500,400);
-    //translate(0,0);
- //<>//
- //current
-   currentUpdate(); //<>//
+  panel.draw();
+
+
+
+ //current 
+   currentUpdate(); 
 
   //draw foods
   if(foods.size() != 0){
     for(Food f : foods){
       if(f.stillExist)
         f.draw();
-    }  //<>//
+    }  
+  } 
+
+   //draw jellyfish
+  for(int i = 0; i < jellys.size(); i++){
+    imageMode(CENTER);
+    jellys.get(i).draw();
   }
-  
-  //test code
-  btn.draw();
-  
-   //draw jelly fish
-for(int i = 0; i < jellys.size(); i++){
-   imageMode(CENTER);
-   jellys.get(i).draw();
- }
- //<>//
-}  //<>//
+
+} 
+
+
+
+  void deathProgress(){
+  //go over all jellys, find out old jellys; 
+  //if old jellyfish more than 1, reduce them to 1
+  ArrayList<Jellyfish> dyingJellys = new ArrayList<Jellyfish>();
+  for(int i = 0; i < jellys.size(); i++){
+    if(jellys.get(i).age == 4)
+      dyingJellys.add(jellys.get(i));
+  }
+  if(dyingJellys.size()>1){
+    int keepIndex = random.nextInt(0,dyingJellys.size());
+    dyingJellys.remove(keepIndex); 
+    //now all the jellys left in dyingJellys are jellys that will be remove from existing jellys
+    for(Jellyfish j : dyingJellys){
+      j.isDead = true;
+    }
+  }
+
+}
 
 void currentUpdate(){
     if(millis() - currentTime > 5000){
@@ -294,8 +335,8 @@ void currentUpdate(){
       currentTime = millis();
     }
     fill(255);
-    text("current: " + current.x + " " + current.y, 200, 200);
-}
+    text("current: " + current.x + " " + current.y, 200, 200); //<>// //<>//
+} //<>// //<>//
 
 void autoChord(ArrayList<AudioSample> list, AudioSample s){
   int index1 = 0;
@@ -304,8 +345,8 @@ void autoChord(ArrayList<AudioSample> list, AudioSample s){
   
   index1 = list.indexOf(s);
   
-  if(index1 + 2 <= list.size()) //<>// //<>//
-    index2 = index1 + 2;
+  if(index1 + 2 <= list.size()) //<>// //<>// //<>//
+    index2 = index1 + 2; //<>// //<>//
   if(index1 + 4 <= list.size())
     index3 = index1 + 4;
   if(index1 != 0 && index2 != 0 && index3 != 0){
@@ -314,8 +355,6 @@ void autoChord(ArrayList<AudioSample> list, AudioSample s){
     list.get(index3).trigger();
   }
 }
-
-
 
 void keyPressed(){
   //if(key=='q') autoChord(lofi1, 0);
@@ -336,11 +375,12 @@ void mousePressed(){
   for(Jellyfish j : jellys){
     if(j.overJelly) { 
       j.isdrag = true; 
-      
     } else {
       j.isdrag = false;
     }
   }
+  
+  //image(stillF50,mouseX,mouseY);
 }
 
 void mouseReleased() {
@@ -360,10 +400,12 @@ void stop(){
 
 PVector randomPosition(){
   PVector p = new PVector();
-  p.x = random.nextInt(35, width-35);
-  p.y = random.nextInt(35, height-35);
+  p.x = random.nextInt(80, width-80);
+  p.y = random.nextInt(80, height-220);
   return p;
 }
+
+
 
 //void setVolume(){
 //  for(ArrayList<AudioSample> temp : allNotes){
