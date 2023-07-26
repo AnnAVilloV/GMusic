@@ -77,6 +77,7 @@ PImage btnOn;
 PImage btnOff;
 PImage stillM50;
 PImage stillF50;
+PImage shrimp;
 
 Gif jellyM50;
 Gif jellyM80;
@@ -84,6 +85,7 @@ Gif jellyM100;
 Gif jellyF50;
 Gif jellyF80;
 Gif jellyF100;
+Gif shrimpStillR;
 
 //booleans
 boolean prevMousePressed = false;
@@ -129,8 +131,6 @@ ArrayList<Food> foods;
 //state
 String mood;
 
-//test code
-Button btn;
 
 void setup(){
    //fullScreen();
@@ -265,6 +265,7 @@ void setup(){
    btnOn = loadImage("on.png");  btnOff = loadImage("off.png");
    stillM50 = loadImage("stillM40.png");  stillM50.resize(50,50);
    stillF50 = loadImage("stillF40.png");  stillF50.resize(50,50);
+   shrimp = loadImage("shrimpStatic.png"); 
    
    jellyM50 = new Gif(this, "jelly50.gif");   jellyM50.play();
    jellyM80 = new Gif(this, "jelly80.gif");   jellyM80.play();
@@ -272,11 +273,11 @@ void setup(){
    jellyF50 = new Gif(this, "jellyDark50.gif");   jellyF50.play();
    jellyF80 = new Gif(this, "jellyDark80.gif");   jellyF80.play();
    jellyF100 = new Gif(this, "jellyDark100.gif");   jellyF100.play();
-
+   shrimpStillR = new Gif(this, "shrimpStillR.gif");   shrimpStillR.play();
 
    //panel
    panel = new Panel();
-   btn = new Button(DARK_BLUE, BLUE_PURPLE, "test");
+
    
 }
 
@@ -285,8 +286,6 @@ void draw(){
   background(BGCOLOR);
   image(bgpic,500,400);
   panel.draw();
-
-
 
  //current 
    currentUpdate(); 
@@ -380,7 +379,7 @@ void mousePressed(){
     }
   }
   
-  //image(stillF50,mouseX,mouseY);
+
 }
 
 void mouseReleased() {
@@ -388,7 +387,13 @@ void mouseReleased() {
     if(j.isdrag)
       j.isdrag = false;
   }
+  
+  
+  panel.femaleAdd.released = true;
+  panel.maleAdd.released = true;
+  panel.shrimpAdd.released = true;
 }
+
 
 void stop(){
   for(AudioSample s : lofi1){

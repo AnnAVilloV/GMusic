@@ -15,6 +15,8 @@ class Food{
   int noteTime;
   int count = 0;
   
+  Food(){}
+  
   Food(int x, int y){
     position.x = x;
     position.y = y;

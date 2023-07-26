@@ -6,14 +6,23 @@ class DragButton {
     int buttonColor;
     int defaultColor;
     int hoverColor;
-    String text;
+    String type;
+    PImage img;
+    
+    boolean pressed = false;
+    boolean released = false;
     
     
-    DragButton(int defaultColor, int hoverColor, String text) {
+    DragButton(float x, float y, float w, float h,int defaultColor, int hoverColor, String type,PImage p) {
+        this.x = x; 
+        this.y = y; 
+        this.w = w; 
+        this.h = h;
         this.defaultColor = defaultColor;
         this.buttonColor = defaultColor;
         this.hoverColor = hoverColor;
-        this.text = text;
+        this.type = type;
+        this.img = p.copy();
     }
     
     void draw() {
@@ -23,16 +32,41 @@ class DragButton {
         rectMode(CENTER);
         rect(x, y, w, h, 5, 5, 5, 5);
         fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(18);
-        text(text, x, y);
+        //textAlign(CENTER, CENTER);
+        //textSize(18);
+        //text(text, x, y);
+        image(img,x,y);
+        
+        if(pressed){
+          if(!released)
+            image(img,mouseX,mouseY);
+        }
+        if(released){
+          //test code need alter
+          if(pressed == true){
+            switch(type){
+                case "female":
+                   jellys.add(new Jellyfish(1,new PVector(mouseX,mouseY),0));
+                   break; 
+                case "male":
+                   jellys.add(new Jellyfish(1,new PVector(mouseX,mouseY),1));
+                   break; 
+                case "shrimp":
+                   foods.add(new Shrimp(mouseX,mouseY));
+                   break; 
+            }
+            
+          }
+          pressed = false;
+          released = false;
+        }
     }
     
     void updateButton() {
         if (isMouseHovering()) {
             buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
-                if (prevMousePressed) {
-                    onPressAction();
+                if (mousePressed) {
+                    pressed = true;
                     prevMousePressed = false;
                 }
         } else{
