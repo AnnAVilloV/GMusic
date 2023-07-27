@@ -78,6 +78,7 @@ PImage btnOff;
 PImage stillM50;
 PImage stillF50;
 PImage shrimp;
+PImage fish;
 
 Gif jellyM50;
 Gif jellyM80;
@@ -85,7 +86,16 @@ Gif jellyM100;
 Gif jellyF50;
 Gif jellyF80;
 Gif jellyF100;
+
 Gif shrimpStillR;
+Gif shrimpStillL;
+Gif shrimpMoveR;
+Gif shrimpMoveL;
+
+Gif fishStillR;
+Gif fishStillL;
+Gif fishRunR;
+Gif fishRunL;
 
 //booleans
 boolean prevMousePressed = false;
@@ -94,9 +104,10 @@ boolean prevMousePressed = false;
 int screenWidth = 1000;
 int screenHeight = 800;
 
-int floatIncrement;
-int roamIncrement;
-int chaseIncrement;
+//int floatIncrement;
+//int roamIncrement;
+//int chaseIncrement;
+//int foodIncrement;
 
 //instances
 Random random;
@@ -139,8 +150,8 @@ void setup(){
    background(#4A46CB);
    
    //display setup
-   roamIncrement = displayWidth/ROAM_INCREMENT_PROPORTION ; 
-   chaseIncrement = displayWidth/CHASE_INCREMENT_PROPORTION ; 
+   //roamIncrement = displayWidth/ROAM_INCREMENT_PROPORTION ; 
+   //chaseIncrement = displayWidth/CHASE_INCREMENT_PROPORTION ; 
 
    //instances setup
    random = new Random();
@@ -266,6 +277,7 @@ void setup(){
    stillM50 = loadImage("stillM40.png");  stillM50.resize(50,50);
    stillF50 = loadImage("stillF40.png");  stillF50.resize(50,50);
    shrimp = loadImage("shrimpStatic.png"); 
+   fish = loadImage("sakaStatic.png");  fish.resize(70,70);
    
    jellyM50 = new Gif(this, "jelly50.gif");   jellyM50.play();
    jellyM80 = new Gif(this, "jelly80.gif");   jellyM80.play();
@@ -274,6 +286,14 @@ void setup(){
    jellyF80 = new Gif(this, "jellyDark80.gif");   jellyF80.play();
    jellyF100 = new Gif(this, "jellyDark100.gif");   jellyF100.play();
    shrimpStillR = new Gif(this, "shrimpStillR.gif");   shrimpStillR.play();
+   shrimpStillL = new Gif(this, "shrimpStillL.gif");   shrimpStillL.play();
+   shrimpMoveR = new Gif(this, "shrimpMoveR.gif");   shrimpMoveR.play();
+   shrimpMoveL = new Gif(this, "shrimpMoveL.gif");   shrimpMoveL.play();
+   fishStillR = new Gif(this, "sakaStillR.gif");  fishStillR.play();
+   fishStillL = new Gif(this, "sakaStillL.gif");  fishStillL.play();
+   //fishRunR = new Gif(this, "sakaRunR.gif");   fishRunR.play();
+   //fishRunL = new Gif(this, "sakaRunL.gif");   fishRunL.play();
+   
 
    //panel
    panel = new Panel();
@@ -392,6 +412,7 @@ void mouseReleased() {
   panel.femaleAdd.released = true;
   panel.maleAdd.released = true;
   panel.shrimpAdd.released = true;
+  panel.fishAdd.released = true;
 }
 
 

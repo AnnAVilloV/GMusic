@@ -3,6 +3,7 @@ class Panel{
   DragButton femaleAdd = new DragButton(350,680,100,60,#2b1945, BLUE_PURPLE, "female",stillF50);
   DragButton maleAdd = new DragButton(350,750,100,60,#2b1945, BLUE_PURPLE, "male",stillM50);
   DragButton shrimpAdd = new DragButton(500,700,100,60,#2b1945, BLUE_PURPLE, "shrimp",shrimp);
+  DragButton fishAdd = new DragButton(650,700,100,60,#2b1945, BLUE_PURPLE, "fish",fish);
   
   Panel(){
   }
@@ -14,6 +15,7 @@ class Panel{
     femaleAdd.draw();
     maleAdd.draw();
     shrimpAdd.draw();
+    fishAdd.draw();
     
     //fill(#2b1945);
     //rect(300,650,100,60);

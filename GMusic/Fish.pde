@@ -1,4 +1,4 @@
-class Shrimp extends Food{
+class Fish extends Food{
   PVector aim;
   String state = "roam";
   int startTime;
@@ -6,8 +6,8 @@ class Shrimp extends Food{
   boolean isStay = false;
   float orientation = 0f;
   float foodIncrement = 0.5f;
-  
-  Shrimp(float x, float y){
+
+  Fish(float x, float y){
     this.position.x = x;
     this.position.y = y;
     this.aim = randomPosition().copy();
@@ -18,19 +18,12 @@ class Shrimp extends Food{
       integrate();
     }
     stateSwitcher();
-    
-    if(state == "roam"){
-      if(orientation > -PI/2 && orientation < PI/2 )
-        image(shrimpMoveR, position.x,position.y);
-      else
-        image(shrimpMoveL, position.x,position.y);
-    }else{
-      if(orientation > -PI/2 && orientation < PI/2 )
-        image(shrimpStillR, position.x,position.y);
-      else
-        image(shrimpStillL, position.x,position.y);
-    }
 
+    if(orientation > -PI/2 && orientation < PI/2 )
+      image(fishStillR, position.x,position.y);
+    else
+      image(fishStillL, position.x,position.y);
+  
   }
   
   void stateSwitcher(){

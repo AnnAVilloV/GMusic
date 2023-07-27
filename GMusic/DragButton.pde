@@ -54,6 +54,9 @@ class DragButton {
                 case "shrimp":
                    foods.add(new Shrimp(mouseX,mouseY));
                    break; 
+                case "fish":
+                   foods.add(new Fish(mouseX,mouseY));
+                   break; 
             }
             
           }
