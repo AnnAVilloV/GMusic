@@ -15,9 +15,13 @@ class Food{
   int noteTime;
   int count = 0;
   
+  //drag function
+  boolean overFood = false;
+  boolean isdrag = false;
+  
   Food(){}
   
-  Food(int x, int y){
+  Food(float x, float y){
     position.x = x;
     position.y = y;
     
@@ -25,11 +29,22 @@ class Food{
     count = noteSet.size()-1;
   }
   
-  void draw(){
+  void draw(){    
     integrate();
     fill(255);
     noStroke();
     circle(position.x,position.y,15);
+    
+      if (mouseX > position.x -50 && mouseX < position.x + 50 && 
+          mouseY > position.y -50 && mouseY < position.y + 50) {
+        overFood = true;  
+      } else {
+        overFood = false;
+      }
+      if(isdrag){
+        position.x = mouseX;
+        position.y = mouseY;
+      }
     
     //note trigger
       if (millis() - noteTime >= 3000){
@@ -39,7 +54,17 @@ class Food{
             noteTime = millis();
         }
       }
+      removeFood();
   }
+  
+  void removeFood(){
+      if (mouseX > position.x -50 && mouseX < position.x + 50 && 
+        mouseY > position.y -50 && mouseY < position.y + 50) {
+        if(mousePressed && mouseButton == RIGHT)
+           foods.remove(this);
+      } 
+  }
+
   
   void integrate(){
     velocity.add(gravity);
@@ -52,14 +77,31 @@ class Food{
   }
 
   void resetWhenHit(){
-    if(position.x < 10)
-      position.x = 10;
-    if(position.x > width - 10)
-      position.x = width - 10;
-    if(position.y < 10)
-      position.y = 10;
-    if(position.y > height - 10)
-      position.y = height - 10;
+    if(position.x < 80)
+      position.x = 80;
+    if(position.x > width - 80)
+      position.x = width - 80;
+    if(position.y < 80)
+      position.y = 80;
+    if(position.y > height - 190)
+      position.y = height - 190;
+  }
+  
+  void eat(Jellyfish j){
+    j.grams += 5;
+  }
+  
+  void dragFunction(){
+        if (mouseX > position.x -50 && mouseX < position.x + 50 && 
+          mouseY > position.y -50 && mouseY < position.y + 50) {
+        overFood = true;  
+      } else {
+        overFood = false;
+      }
+      if(isdrag){
+        position.x = mouseX;
+        position.y = mouseY;
+      }
   }
 
 }

@@ -42,6 +42,12 @@ float dis = Float.MAX_VALUE;
     Jellyfish baby = new Jellyfish(1,myJelly.position,random.nextInt(0,2));
     jellys.add(baby);
     
+    if(myJelly.isPink || myMate.isPink){
+      int chance = random.nextInt(0,2);
+      if(chance == 1)
+        baby.isPink = true;
+    }
+    
     myJelly.grams -= 5;
     mateCount++;
     foundMate = false;

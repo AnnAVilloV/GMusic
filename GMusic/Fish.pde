@@ -24,6 +24,9 @@ class Fish extends Food{
     else
       image(fishStillL, position.x,position.y);
   
+     dragFunction();
+  
+    removeFood();
   }
   
   void stateSwitcher(){
@@ -43,6 +46,7 @@ class Fish extends Food{
   }
   
   void integrate(){
+    resetWhenHit();
     PVector toTarget = new PVector(aim.x - position.x, aim.y - position.y);
     float distance = toTarget.mag();
     velocity = toTarget.copy();
@@ -78,6 +82,19 @@ class Fish extends Food{
        orientation -= 2*PI ;
      else if (orientation < -PI) 
        orientation += 2*PI ;  
+  }
+  
+  void eat(Jellyfish j){
+    j.grams += 10;
+    int chance = random.nextInt(0,3);
+    if(chance == 0){
+      if(j.gender == 1){
+        j.gender = 0;
+      }else{
+        j.gender = 1;
+      }
+    }
+      
   }
 
 }

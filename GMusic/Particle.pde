@@ -24,11 +24,17 @@ final class Particle{
   void draw(){
     noStroke();
     integrate();
-    if(myJelly.isdrag){
-      fill(#FF8031,alpha);
+    if(myJelly.isPairable){
+      image(heart,position.x,position.y);
     }else{
-      fill(255,alpha);
+      if(myJelly.isdrag){
+        fill(#FF8031,alpha);
+      }else{
+        fill(255,alpha);
+      }          
+      circle(position.x,position.y,radius);
     }
+
     if(millis() - rTime >= 100){
       if(radius > 0){
         radius = radius - 0.1;
@@ -36,9 +42,8 @@ final class Particle{
         rTime = millis();
       }
     }
-
-    circle(position.x,position.y,radius);
   }
+  
   void particleReset(){
       radius = 10;
       alpha = 255;

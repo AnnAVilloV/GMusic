@@ -31,10 +31,12 @@ class DragButton {
         noStroke();
         rectMode(CENTER);
         rect(x, y, w, h, 5, 5, 5, 5);
-        fill(255);
+        
+        //fill(255);
         //textAlign(CENTER, CENTER);
         //textSize(18);
         //text(text, x, y);
+        
         image(img,x,y);
         
         if(pressed){
@@ -57,6 +59,9 @@ class DragButton {
                 case "fish":
                    foods.add(new Fish(mouseX,mouseY));
                    break; 
+                case "algae":
+                   foods.add(new Algae(mouseX,mouseY));
+                   break; 
             }
             
           }
@@ -67,7 +72,7 @@ class DragButton {
     
     void updateButton() {
         if (isMouseHovering()) {
-            buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
+            //buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
                 if (mousePressed) {
                     pressed = true;
                     prevMousePressed = false;

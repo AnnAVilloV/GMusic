@@ -38,7 +38,7 @@ class Button {
     void updateButton() {
         
         if (isMouseHovering()) {
-            buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
+            //buttonColor = lerpColor(buttonColor, hoverColor, 0.1);
                 if (prevMousePressed) {
                     onPressAction();
                     prevMousePressed = false;

@@ -43,9 +43,11 @@ float dis = Float.MAX_VALUE;
   ArrayList<Particle> particleList = new ArrayList<Particle>();
   int particleTime;
   
+  
   //interaction
   boolean overJelly = false;
   boolean isdrag = false;
+  boolean isPink = false;
   
   
   //mate
@@ -128,7 +130,7 @@ float dis = Float.MAX_VALUE;
     }
     else{
       // text("Im dead", position.x,position.y);
-      alpha--;
+      alpha -= 5;
       if(alpha <= 10){
         jellys.remove(this);
       }else{
@@ -192,6 +194,21 @@ float dis = Float.MAX_VALUE;
   }
   
   void drawGif(){
+    if(isPink){
+       if(age < 3){
+         if(gender==0)
+           image(cherryJelly50,0,0);
+         else
+           image(pinkJelly50,0,0);
+       }
+       else{
+         if(gender==0)
+           image(cherryJelly100,0,0);
+         else
+           image(pinkJelly100,0,0);
+       }
+      return;
+    }
    if(gender == 0){ //female
      if(age == 1)
        image(jellyF50,0,0);
@@ -338,10 +355,10 @@ float dis = Float.MAX_VALUE;
         growTime = millis();
     }
     // age update
-    if(grams >= 10 && age == 1){
+    if(grams >= 15 && age == 1){
      age = 2;
      //gifSet();
-    }else if(grams >= 20 && age == 2){
+    }else if(grams >= 25 && age == 2){
      age = 3;
      this.noteSet.clear();
      this.noteSet.addAll(lofiMinorF5s); 
@@ -438,7 +455,9 @@ float dis = Float.MAX_VALUE;
         if(dis >= 150)
           foundFood = false;
         else if(dis <= 30){
-          this.grams += 5;
+          //eat function here
+          //this.grams += 5;
+          myFood.eat(this);
           myFood.stillExist = false;
           foundFood = false;
         }

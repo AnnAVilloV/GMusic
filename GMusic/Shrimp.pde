@@ -1,3 +1,4 @@
+
 class Shrimp extends Food{
   PVector aim;
   String state = "roam";
@@ -30,7 +31,8 @@ class Shrimp extends Food{
       else
         image(shrimpStillL, position.x,position.y);
     }
-
+    dragFunction();
+    removeFood();
   }
   
   void stateSwitcher(){
@@ -50,6 +52,7 @@ class Shrimp extends Food{
   }
   
   void integrate(){
+    resetWhenHit();
     PVector toTarget = new PVector(aim.x - position.x, aim.y - position.y);
     float distance = toTarget.mag();
     velocity = toTarget.copy();
@@ -85,6 +88,11 @@ class Shrimp extends Food{
        orientation -= 2*PI ;
      else if (orientation < -PI) 
        orientation += 2*PI ;  
+  }
+  
+  void eat(Jellyfish j){
+    j.grams = 30;
+    j.isPink = true;
   }
 
 }

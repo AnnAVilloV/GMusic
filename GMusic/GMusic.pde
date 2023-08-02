@@ -72,6 +72,7 @@ AudioSample syE6;
 
 //pictures
 PImage bgpic;
+PImage bgLight;
 PImage panelPic;
 PImage btnOn;
 PImage btnOff;
@@ -79,6 +80,11 @@ PImage stillM50;
 PImage stillF50;
 PImage shrimp;
 PImage fish;
+PImage heart;
+PImage algaeStatic;
+PImage maleIcon;
+PImage femaleIcon;
+PImage bin1,bin2;
 
 Gif jellyM50;
 Gif jellyM80;
@@ -86,6 +92,12 @@ Gif jellyM100;
 Gif jellyF50;
 Gif jellyF80;
 Gif jellyF100;
+Gif pinkJelly50;
+Gif pinkJelly100;
+Gif cherryJelly50;
+Gif cherryJelly100;
+
+Gif algae;
 
 Gif shrimpStillR;
 Gif shrimpStillL;
@@ -272,19 +284,32 @@ void setup(){
    
    //pictures set up
    bgpic = loadImage("background.png");   bgpic.resize(1000,800);
+   bgLight = loadImage("bgLight.png");   bgLight.resize(1000,800);
    panelPic = loadImage("panel.png");   panelPic.resize(1000,800);
    btnOn = loadImage("on.png");  btnOff = loadImage("off.png");
    stillM50 = loadImage("stillM40.png");  stillM50.resize(50,50);
    stillF50 = loadImage("stillF40.png");  stillF50.resize(50,50);
    shrimp = loadImage("shrimpStatic.png"); 
    fish = loadImage("sakaStatic.png");  fish.resize(70,70);
+   heart = loadImage("heart.png");  heart.resize(20,20);
+   algaeStatic = loadImage("algeaStatic.png");
+   maleIcon = loadImage("male.png");
+   femaleIcon = loadImage("female.png");
+   bin1 = loadImage("mon1.png"); bin1.resize(100,100);
+   bin2 = loadImage("mon2.png"); bin2.resize(100,100);
    
+   
+   algae = new Gif(this, "algea.gif");
    jellyM50 = new Gif(this, "jelly50.gif");   jellyM50.play();
    jellyM80 = new Gif(this, "jelly80.gif");   jellyM80.play();
    jellyM100 = new Gif(this, "jelly100.gif");   jellyM100.play();
    jellyF50 = new Gif(this, "jellyDark50.gif");   jellyF50.play();
    jellyF80 = new Gif(this, "jellyDark80.gif");   jellyF80.play();
    jellyF100 = new Gif(this, "jellyDark100.gif");   jellyF100.play();
+   pinkJelly50 = new Gif(this, "pinkJelly50.gif");  pinkJelly50.play();
+   pinkJelly100 = new Gif(this, "pinkJelly100.gif");  pinkJelly100.play();
+   cherryJelly50 = new Gif(this, "cherryJelly50.gif");  cherryJelly50.play();
+   cherryJelly100 = new Gif(this, "cherryJelly100.gif");  cherryJelly100.play();
    shrimpStillR = new Gif(this, "shrimpStillR.gif");   shrimpStillR.play();
    shrimpStillL = new Gif(this, "shrimpStillL.gif");   shrimpStillL.play();
    shrimpMoveR = new Gif(this, "shrimpMoveR.gif");   shrimpMoveR.play();
@@ -303,8 +328,11 @@ void setup(){
 
 
 void draw(){
-  background(BGCOLOR);
-  image(bgpic,500,400);
+  background(BGCOLOR);  
+  if(mood == "calm")
+    image(bgpic,500,400);
+  else
+    image(bgLight,500,400);
   panel.draw();
 
  //current 
@@ -312,9 +340,9 @@ void draw(){
 
   //draw foods
   if(foods.size() != 0){
-    for(Food f : foods){
-      if(f.stillExist)
-        f.draw();
+    for(int i = 0; i < foods.size(); i++){
+      if(foods.get(i).stillExist)
+        foods.get(i).draw();
     }  
   } 
 
@@ -323,9 +351,8 @@ void draw(){
     imageMode(CENTER);
     jellys.get(i).draw();
   }
-
+  
 } 
-
 
 
   void deathProgress(){
@@ -353,9 +380,9 @@ void currentUpdate(){
       current.y = random(-0.1,0.1);
       currentTime = millis();
     }
-    fill(255);
-    text("current: " + current.x + " " + current.y, 200, 200); //<>// //<>//
-} //<>// //<>//
+    //fill(255);
+    //text("current: " + current.x + " " + current.y, 200, 200); //<>//
+}  //<>//
 
 void autoChord(ArrayList<AudioSample> list, AudioSample s){
   int index1 = 0;
@@ -369,50 +396,88 @@ void autoChord(ArrayList<AudioSample> list, AudioSample s){
   if(index1 + 4 <= list.size())
     index3 = index1 + 4;
   if(index1 != 0 && index2 != 0 && index3 != 0){
-    list.get(index1).trigger();
-    list.get(index2).trigger();
-    list.get(index3).trigger();
+    try{
+        list.get(index1).trigger();
+        list.get(index2).trigger();
+        list.get(index3).trigger();
+    }catch(Exception e){
+      e.printStackTrace();
+    }
   }
 }
 
-void keyPressed(){
-  //if(key=='q') autoChord(lofi1, 0);
-  //if(key=='w') autoChord(lofi1, 1);
-  //if(key=='e') autoChord(lofi1, 2);
-  if(key=='r') lofi1.get(3).trigger();
-  if(key=='t') lofi1.get(4).trigger();
-  if(key=='y') lofi1.get(5).trigger();
-  if(key=='u') lofi1.get(6).trigger();
-  if(key=='i') lofi1.get(7).trigger();
-}
+//void keyPressed(){
+//  if(key=='r') lofi1.get(3).trigger();
+//  if(key=='t') lofi1.get(4).trigger();
+//  if(key=='y') lofi1.get(5).trigger();
+//  if(key=='u') lofi1.get(6).trigger();
+//  if(key=='i') lofi1.get(7).trigger();
+//}
 
 void mousePressed(){
-  //Food food = new Food(mouseX, mouseY);
-  //foods.add(food);
   prevMousePressed = true;
   
   for(Jellyfish j : jellys){
     if(j.overJelly) { 
-      j.isdrag = true; 
+      if(mouseButton == LEFT)
+        j.isdrag = true; 
+      else
+        j.isDead = true;
     } else {
       j.isdrag = false;
     }
   }
   
+  for(Food f : foods){
+    if(f.overFood) { 
+      if(mouseButton == LEFT)
+        f.isdrag = true; 
+    } else {
+      f.isdrag = false;
+    }
+  }
+  
+  
+  
 
 }
 
 void mouseReleased() {
+  boolean overMonster = false;
+  if(mouseX>width*0.9 && mouseX < width*0.95 && mouseY > height*0.7 && mouseY < height*0.8){
+    overMonster = true;
+  }
+  
   for(Jellyfish j : jellys){
     if(j.isdrag)
-      j.isdrag = false;
+        if(overMonster){
+          jellys.remove(j);
+          break;
+        }
+        j.isdrag = false;
+    }
+  for(Food f : foods){
+
+    if(f.isdrag){
+        if(overMonster){
+          foods.remove(f);
+          break;
+        }
+        f.isdrag = false;
+    }
+
   }
   
   
-  panel.femaleAdd.released = true;
-  panel.maleAdd.released = true;
-  panel.shrimpAdd.released = true;
-  panel.fishAdd.released = true;
+  if(mouseX>width*0.04 && mouseX<width*0.96 && mouseY>height*0.04 && mouseY < height*0.8){
+      panel.femaleAdd.released = true;
+      panel.maleAdd.released = true;
+      panel.algaeAdd.released = true;
+      panel.shrimpAdd.released = true;
+      panel.fishAdd.released = true;
+  }
+
+
 }
 
 
@@ -430,8 +495,6 @@ PVector randomPosition(){
   p.y = random.nextInt(80, height-220);
   return p;
 }
-
-
 
 //void setVolume(){
 //  for(ArrayList<AudioSample> temp : allNotes){
