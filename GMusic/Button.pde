@@ -18,23 +18,13 @@ class Button {
     }
     
     void draw() {
-        updateButton();
-        //fill(buttonColor, 200);
-        //noStroke();
-        //rectMode(CENTER);
-        //rect(x, y, w, h, 5, 5, 5, 5);
-        //fill(255);
-        //textAlign(CENTER, CENTER);
-        //textSize(18);
-        //text(text, x, y);
-        
+        updateButton();        
         if(tik){
           image(btnOn,150,720);
         }else{
           image(btnOff,150,720);
         }
     }
-    
     void updateButton() {
         
         if (isMouseHovering()) {
@@ -46,7 +36,6 @@ class Button {
         } else{
             buttonColor = lerpColor(buttonColor, defaultColor, 0.1);
         }
-        
     }
     
     boolean isMouseHovering() {

@@ -1,4 +1,3 @@
-
 final float ORIENTATION_INCREMENT = PI/32 ;
 
 class Jellyfish{
@@ -43,24 +42,17 @@ float dis = Float.MAX_VALUE;
   ArrayList<Particle> particleList = new ArrayList<Particle>();
   int particleTime;
   
-  
   //interaction
   boolean overJelly = false;
   boolean isdrag = false;
   boolean isPink = false;
-  
   
   //mate
   MateModule mModule = new MateModule(this);
   boolean isPairable = false;
   int mateTime;
   
-  
-  
   Jellyfish(int age, PVector p, int gender){
-    
-    //chaseIncrement = chaseInc;
-    
     this.position = p.copy();
     this.aim = randomPosition().copy();
     
@@ -70,8 +62,6 @@ float dis = Float.MAX_VALUE;
     this.age = age;
     this.gender = gender;
     this.mateTime = millis();
-    //gifSet();
-    
 
     //music set
     if(age == 1 || age == 2){
@@ -82,10 +72,8 @@ float dis = Float.MAX_VALUE;
     }
     else 
       noteSet.addAll(lofiMinorF5s);
-
-    
+      
     this.noteTime = millis();
-    
     this.lastAngleTime = millis();
     
     //particles set
@@ -96,22 +84,7 @@ float dis = Float.MAX_VALUE;
   }
   
   
-  void draw(){
-    //test code
-    //  if(noteSet.get(0).equals(lofiMinorF6s.get(0))){
-    //    text("lofiMinorF6s", position.x,position.y - 150);
-    //  }else if(noteSet.get(0).equals(lofiMinorF5s.get(0))){
-    //    text("lofiMinorF5s", position.x,position.y - 150);
-    //  }else if(noteSet.get(0).equals(lofiC6s.get(0))){
-    //    text("lofiC6s", position.x,position.y - 150);
-    //  }else if(noteSet.get(0).equals(lofiC5s.get(0))){
-    //    text("lofiC5s", position.x,position.y - 150);
-    //  }else{
-    //    text("none", position.x,position.y - 150);
-    //  }
-    
-    
-    
+  void draw(){  
     if(age < 4) //old jelly don't eat
       foodDetect();
     
@@ -125,11 +98,8 @@ float dis = Float.MAX_VALUE;
     
     if(!isDead){
       drawJelly();
-      //test code
-      text(age, position.x-80, position.y-50);
     }
     else{
-      // text("Im dead", position.x,position.y);
       alpha -= 5;
       if(alpha <= 10){
         jellys.remove(this);
@@ -138,11 +108,7 @@ float dis = Float.MAX_VALUE;
         drawJelly();
         tint(255,255);
       }
-
-      
-
     }
- 
   }
 
   void drawJelly(){
@@ -164,7 +130,6 @@ float dis = Float.MAX_VALUE;
     pushMatrix();
     translate(position.x,position.y);
     rotate(orientation);
-    // image(,0,0);
     drawGif();
     popMatrix();
 
@@ -174,23 +139,6 @@ float dis = Float.MAX_VALUE;
     fill(255);
     textSize(20);
     text(grams,position.x,position.y);
-
-
-    //test color
-    // if(state == "chase")
-    //   fill(#FFCE29);
-    // else if(isPairable)
-    //     fill(#FF8EC6);
-    // else if(isfloat)
-    //   fill(#E01705);
-    // else
-    //   fill(JELLYFISH);
-    //fill(255);
-    //circle(position.x,position.y, 35);
-    //int x = (int)(position.x + 10 * cos(orientation));  
-    //int y = (int)(position.y + 10 * sin(orientation));
-    //fill(0);
-    //circle(x,y,10);   
   }
   
   void drawGif(){
@@ -264,17 +212,13 @@ float dis = Float.MAX_VALUE;
             //note trigger
       if(age == 1 ){
         if (millis() - noteTime >= 1000){
-          //if(state != "float"){
             this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
             noteTime = millis();
-          //}
         }
       }else if(age == 2){
          if (millis() - noteTime >= 2000){
-            //if(state != "float"){
               this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
               noteTime = millis();
-            //}
          }
       }else if(age == 3){
         if (millis() - noteTime >= 2000){
@@ -289,20 +233,16 @@ float dis = Float.MAX_VALUE;
             autoChord(lofi2, this.noteSet.get(random.nextInt(0, noteSet.size())));
             noteTime = millis();
         }
-      }
-      
+      } 
     }
-
   }
 
   void dragMusic(){
      float speed = abs(mouseX-pmouseX) + abs(mouseY-pmouseY);
       if(age < 4){
         if (millis() - noteTime >= 2000/speed){
-          //if(state != "float"){
             this.noteSet.get(random.nextInt(0, noteSet.size())).trigger();
             noteTime = millis();
-          //}
         }
       }else{
         if (millis() - noteTime >= 2000/speed){
@@ -331,21 +271,6 @@ float dis = Float.MAX_VALUE;
       mModule.detectMate();
       text("isPairable", position.x, position.y - 60);
     }
-
-    //test code
-    // if(gender == 0){
-    //  fill(#FA1E6F);
-    //  text("isP:"+isPairable, position.x-50, position.y-50);
-    //  text("fM:"+mModule.foundMate, position.x-50, position.y+50);
-    //  text(state, position.x, position.y-100);
-    // }else{
-    //  fill(#FAAD1E);
-    //  text("isP:"+isPairable, position.x+50, position.y-50);
-    //  text("fM:"+mModule.foundMate, position.x+50, position.y+50);
-    //  text(state, position.x, position.y+100);
-    // }
-
-
   }
   
   void updateBioState(){
@@ -357,17 +282,18 @@ float dis = Float.MAX_VALUE;
     // age update
     if(grams >= 15 && age == 1){
      age = 2;
-     //gifSet();
+     jiu.trigger();
     }else if(grams >= 25 && age == 2){
      age = 3;
      this.noteSet.clear();
      this.noteSet.addAll(lofiMinorF5s); 
-     //gifSet();
+     jiu.trigger();
     }
 
     //after 2 mate become old - age 4
     if(age == 3 && mModule.mateCount >= 2){
       age = 4 ;
+      jiu.trigger();
       deathProgress();
     }
   }
@@ -390,7 +316,6 @@ float dis = Float.MAX_VALUE;
         roamStartTime = millis();
         roamTime = random.nextInt(8,11) * 1000;
         angleSelect();
-        //noteTime = millis();
         isfloat = false;
       }
     }
@@ -412,12 +337,9 @@ float dis = Float.MAX_VALUE;
         state = "roam";
       }
     }
-    
     if(state == "mate" && (!isPairable || !mModule.myMate.isPairable)){
         state = "roam";
     }
-
-
   }
   
   void angleSelect(){
@@ -456,7 +378,6 @@ float dis = Float.MAX_VALUE;
           foundFood = false;
         else if(dis <= 30){
           //eat function here
-          //this.grams += 5;
           myFood.eat(this);
           myFood.stillExist = false;
           foundFood = false;
@@ -493,10 +414,8 @@ float dis = Float.MAX_VALUE;
         velocity = toTarget.normalize().mult(chaseIncrement);
       }
       PVector realVel = velocity.copy();
-      //realVel.add(current);
       position.add(realVel);
       
-
     //get orientation
     float targetOri = atan2(velocity.y, velocity.x);
     if(abs(targetOri - orientation) <= ORIENTATION_INCREMENT){

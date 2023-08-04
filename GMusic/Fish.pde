@@ -94,7 +94,5 @@ class Fish extends Food{
         j.gender = 1;
       }
     }
-      
   }
-
 }

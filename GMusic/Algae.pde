@@ -1,10 +1,7 @@
 class Algae extends Food{
-
-
   Algae(float x, float y){
     super(x,y);
   }
-  
   void draw(){
       integrate();    
       image(algae, position.x, position.y);
@@ -18,5 +15,4 @@ class Algae extends Food{
       }
       removeFood();
   }
-
 }

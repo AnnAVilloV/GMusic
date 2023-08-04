@@ -1,4 +1,3 @@
-
 class Shrimp extends Food{
   PVector aim;
   String state = "roam";

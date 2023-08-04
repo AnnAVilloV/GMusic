@@ -22,6 +22,9 @@ Minim minim;
 
 AudioPlayer bgMusic;
 
+AudioSample bo;
+AudioSample jiu;
+
 AudioSample mG4;
 AudioSample mA4;
 AudioSample mA4s;
@@ -106,8 +109,8 @@ Gif shrimpMoveL;
 
 Gif fishStillR;
 Gif fishStillL;
-Gif fishRunR;
-Gif fishRunL;
+//Gif fishRunR;
+//Gif fishRunL;
 
 //booleans
 boolean prevMousePressed = false;
@@ -115,11 +118,6 @@ boolean prevMousePressed = false;
 //numbers
 int screenWidth = 1000;
 int screenHeight = 800;
-
-//int floatIncrement;
-//int roamIncrement;
-//int chaseIncrement;
-//int foodIncrement;
 
 //instances
 Random random;
@@ -138,7 +136,7 @@ ArrayList<AudioSample> lofiC6s;
 ArrayList<AudioSample> lofiC7s;
 ArrayList<AudioSample> lofi2;
 
-ArrayList<AudioSample> mrbMinorG4;
+//ArrayList<AudioSample> mrbMinorG4;
 
 ArrayList<AudioSample> syMinorF5s;
 
@@ -156,14 +154,9 @@ String mood;
 
 
 void setup(){
-   //fullScreen();
    size(1000,800);
    frameRate(60);
    background(#4A46CB);
-   
-   //display setup
-   //roamIncrement = displayWidth/ROAM_INCREMENT_PROPORTION ; 
-   //chaseIncrement = displayWidth/CHASE_INCREMENT_PROPORTION ; 
 
    //instances setup
    random = new Random();
@@ -174,6 +167,9 @@ void setup(){
    
    bgMusic = minim.loadFile("environment/bubble.mp3",2048);
    bgMusic.loop();
+  
+   bo = minim.loadSample( "environment/bo.mp3",512);
+   jiu = minim.loadSample( "environment/jiu.mp3",512);
   
    lofiMinorF5s = new ArrayList<AudioSample>();
    lofiMinorF6s = new ArrayList<AudioSample>();
@@ -186,7 +182,7 @@ void setup(){
    lofiC7s = new ArrayList<AudioSample>();
    lofi2 = new ArrayList<AudioSample>();
    
-   mrbMinorG4 = new ArrayList<AudioSample>();
+   //mrbMinorG4 = new ArrayList<AudioSample>();
    syMinorF5s = new ArrayList<AudioSample>();
    
    //notes setup
@@ -247,14 +243,14 @@ void setup(){
     lofi2.add(loC7s);    lofi2.add(loD7s);    lofi2.add(loE7s);    lofi2.add(loF7s);    lofi2.add(loG7s);    lofi2.add(loA7s);    lofi2.add(loB7s);
     
       //marimba
-    mG4 = minim.loadSample( "marimba/G4.mp3",512);mrbMinorG4.add(mG4);
-    mA4 = minim.loadSample( "marimba/A4.mp3",512);mrbMinorG4.add(mA4);
-    mA4s = minim.loadSample( "marimba/#A4.mp3",512);mrbMinorG4.add(mA4s);
-    mC5 = minim.loadSample( "marimba/C5.mp3",512);mrbMinorG4.add(mC5);
-    mD5 = minim.loadSample( "marimba/D5.mp3",512);mrbMinorG4.add(mD5);
-    mD5s = minim.loadSample( "marimba/#D5.mp3",512);mrbMinorG4.add(mD5s);
-    mF5 = minim.loadSample( "marimba/F5.mp3",512);mrbMinorG4.add(mF5);
-    mG5 = minim.loadSample( "marimba/G5.mp3",512);mrbMinorG4.add(mG5);
+    //mG4 = minim.loadSample( "marimba/G4.mp3",512);mrbMinorG4.add(mG4);
+    //mA4 = minim.loadSample( "marimba/A4.mp3",512);mrbMinorG4.add(mA4);
+    //mA4s = minim.loadSample( "marimba/#A4.mp3",512);mrbMinorG4.add(mA4s);
+    //mC5 = minim.loadSample( "marimba/C5.mp3",512);mrbMinorG4.add(mC5);
+    //mD5 = minim.loadSample( "marimba/D5.mp3",512);mrbMinorG4.add(mD5);
+    //mD5s = minim.loadSample( "marimba/#D5.mp3",512);mrbMinorG4.add(mD5s);
+    //mF5 = minim.loadSample( "marimba/F5.mp3",512);mrbMinorG4.add(mF5);
+    //mG5 = minim.loadSample( "marimba/G5.mp3",512);mrbMinorG4.add(mG5);
     
     lofi1.addAll(lofiMinorF7s);
     
@@ -266,9 +262,6 @@ void setup(){
     syC6s = minim.loadSample( "sytrus1/#C6.mp3",512);syMinorF5s.add(syC6s);
     syD6 = minim.loadSample( "sytrus1/D6.mp3",512);syMinorF5s.add(syD6);
     syE6 = minim.loadSample( "sytrus1/E6.mp3",512);syMinorF5s.add(syE6);
-
-    //setVolume();
-    
     
    //state set up
    mood = "calm"; //calm, happy
@@ -379,9 +372,7 @@ void currentUpdate(){
       current.x = random(-0.1,0.1);
       current.y = random(-0.1,0.1);
       currentTime = millis();
-    }
-    //fill(255);
-    //text("current: " + current.x + " " + current.y, 200, 200); //<>//
+    } //<>//
 }  //<>//
 
 void autoChord(ArrayList<AudioSample> list, AudioSample s){
@@ -391,8 +382,8 @@ void autoChord(ArrayList<AudioSample> list, AudioSample s){
   
   index1 = list.indexOf(s);
   
-  if(index1 + 2 <= list.size()) //<>// //<>// //<>//
-    index2 = index1 + 2; //<>// //<>//
+  if(index1 + 2 <= list.size()) //<>//
+    index2 = index1 + 2;  //<>//
   if(index1 + 4 <= list.size())
     index3 = index1 + 4;
   if(index1 != 0 && index2 != 0 && index3 != 0){
@@ -405,14 +396,6 @@ void autoChord(ArrayList<AudioSample> list, AudioSample s){
     }
   }
 }
-
-//void keyPressed(){
-//  if(key=='r') lofi1.get(3).trigger();
-//  if(key=='t') lofi1.get(4).trigger();
-//  if(key=='y') lofi1.get(5).trigger();
-//  if(key=='u') lofi1.get(6).trigger();
-//  if(key=='i') lofi1.get(7).trigger();
-//}
 
 void mousePressed(){
   prevMousePressed = true;
@@ -427,7 +410,6 @@ void mousePressed(){
       j.isdrag = false;
     }
   }
-  
   for(Food f : foods){
     if(f.overFood) { 
       if(mouseButton == LEFT)
@@ -436,10 +418,6 @@ void mousePressed(){
       f.isdrag = false;
     }
   }
-  
-  
-  
-
 }
 
 void mouseReleased() {
@@ -465,10 +443,7 @@ void mouseReleased() {
         }
         f.isdrag = false;
     }
-
   }
-  
-  
   if(mouseX>width*0.04 && mouseX<width*0.96 && mouseY>height*0.04 && mouseY < height*0.8){
       panel.femaleAdd.released = true;
       panel.maleAdd.released = true;
@@ -476,10 +451,7 @@ void mouseReleased() {
       panel.shrimpAdd.released = true;
       panel.fishAdd.released = true;
   }
-
-
 }
-
 
 void stop(){
   for(AudioSample s : lofi1){

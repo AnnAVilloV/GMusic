@@ -6,8 +6,7 @@ class Panel{
   DragButton shrimpAdd = new DragButton(610,700,100,60,#2b1945, BLUE_PURPLE, "shrimp",shrimp);
   DragButton fishAdd = new DragButton(720,700,100,60,#2b1945, BLUE_PURPLE, "fish",fish);
   
-  Panel(){
-  }
+  Panel(){}
   
   void draw(){
     image(panelPic,500,400);
@@ -26,11 +25,5 @@ class Panel{
     }else{
       image(bin1,width*0.92,height*0.75);
     }
-
-    //fill(#2b1945);
-    //rect(300,650,100,60);
-    //rect(300,720,100,60);
-    //image(stillF50,350,680);image(stillM50,350,750);
   } 
-
 }

@@ -1,13 +1,10 @@
 class MateModule{
-float dis = Float.MAX_VALUE;
+  float dis = Float.MAX_VALUE;
   Jellyfish myJelly;
-
   boolean foundMate = false;
   Jellyfish myMate;
-
   int mateCount = 0;
 
-  
   MateModule(Jellyfish j){
     this.myJelly = j;
   }
@@ -35,12 +32,12 @@ float dis = Float.MAX_VALUE;
         foundMate = false;
       }
     }
-
   }
 
   void giveBirth(){
     Jellyfish baby = new Jellyfish(1,myJelly.position,random.nextInt(0,2));
     jellys.add(baby);
+    bo.trigger();
     
     if(myJelly.isPink || myMate.isPink){
       int chance = random.nextInt(0,2);
@@ -60,8 +57,4 @@ float dis = Float.MAX_VALUE;
     myMate.mateTime = millis();
     myMate.isPairable = false;
   }
-  
-  
-
-
 }

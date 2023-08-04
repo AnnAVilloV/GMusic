@@ -32,11 +32,6 @@ class DragButton {
         rectMode(CENTER);
         rect(x, y, w, h, 5, 5, 5, 5);
         
-        //fill(255);
-        //textAlign(CENTER, CENTER);
-        //textSize(18);
-        //text(text, x, y);
-        
         image(img,x,y);
         
         if(pressed){
@@ -63,7 +58,6 @@ class DragButton {
                    foods.add(new Algae(mouseX,mouseY));
                    break; 
             }
-            
           }
           pressed = false;
           released = false;
@@ -80,7 +74,6 @@ class DragButton {
         } else{
             buttonColor = lerpColor(buttonColor, defaultColor, 0.1);
         }
-        
     }
     
     boolean isMouseHovering() {

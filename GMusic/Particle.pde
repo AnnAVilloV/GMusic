@@ -2,20 +2,14 @@ final class Particle{
   PVector position = new PVector(0,0);
   PVector velocity = new PVector(0.1f,0.1f);
   float orientation = (float)random.nextDouble(-Math.PI, Math.PI);
-  
   PVector wind = new PVector(0,0);
   private static final float DAMPING = 0.999f ;
-  
   float radius = 10;
-  
   int rTime;
-  
   int alpha = 255;
-  
   Jellyfish myJelly;
   
   Particle(Jellyfish j){
-  
     this.myJelly = j;
     particleReset();
     rTime = millis();
@@ -68,5 +62,4 @@ final class Particle{
       velocity.mult(DAMPING);
       position.add(velocity);
   }
-
 }

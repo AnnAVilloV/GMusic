@@ -92,7 +92,7 @@ class Food{
   }
   
   void dragFunction(){
-        if (mouseX > position.x -50 && mouseX < position.x + 50 && 
+      if (mouseX > position.x -50 && mouseX < position.x + 50 && 
           mouseY > position.y -50 && mouseY < position.y + 50) {
         overFood = true;  
       } else {
